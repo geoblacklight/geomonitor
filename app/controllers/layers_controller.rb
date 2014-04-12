@@ -1,0 +1,2 @@
+class LayersController < ApplicationController
+end
