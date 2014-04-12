@@ -20,6 +20,10 @@ class Status < ActiveRecord::Base
       'FORMAT' => 'image/png'
     }
 
+    uri = URI(layer.host.url + '/wms')
+    uri.query = URI.encode_www_form(options)
+
+
     start_time = Time.now
     resource = RestClient::Resource.new(
       layer.host.url + '/wms',
@@ -64,6 +68,7 @@ class Status < ActiveRecord::Base
                   res_time: elapsed_time,
                   status: status,
                   status_message: body,
+                  submitted_query: uri.to_s,
                   layer_id: layer.id)
   end
 end

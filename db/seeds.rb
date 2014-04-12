@@ -36,10 +36,5 @@ data.each do |doc|
               access: doc['dc_rights_s'],
               bbox: doc['solr_bbox']).first_or_create
 
-  status = Status.where(layer_id: l.id)
 
-  if status.nil? && l.access == "Public"
-    puts 'public and needs status'
-    Status.run_check(l)
-  end
 end

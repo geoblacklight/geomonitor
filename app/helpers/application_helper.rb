@@ -13,14 +13,38 @@ module ApplicationHelper
 
   end
 
-  def status_class(status)
+  def status_class(status, content)
     case status
     when 'OK'
-      content_tag :span, 'OK', class: 'label label-success'
+      content_tag :span, content, class: 'label label-success'
     when 'FAIL'
-      content_tag :span, 'FAIL', class: 'label label-danger'
+      content_tag :span, content, class: 'label label-danger'
     when '??'
-      content_tag :span, '??', class: 'label label-warning'
+      content_tag :span, content, class: 'label label-warning'
     end
+  end
+
+  def format_status_num(status)
+    html = ""
+    puts status
+    sorted_status = status.sort_by { |val| val[1].to_i }
+    puts sorted_status
+    sorted_status.reverse.each do |s|
+      html += status_class(s[0], number_with_delimiter(s[1]))
+      html += " "
+    end
+    return html.html_safe
+  end
+
+  def format_status_percent(status, total)
+    html = ""
+    puts status
+    sorted_status = status.sort_by { |val| val[1].to_i }
+    puts sorted_status
+    sorted_status.reverse.each do |s|
+      html += status_class(s[0], number_to_percentage((s[1].to_f/total.to_f*100), precision: 1))
+      html += " "
+    end
+    return html.html_safe
   end
 end

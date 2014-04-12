@@ -5,7 +5,8 @@ class CreateStatuses < ActiveRecord::Migration
       t.string :res_message
       t.decimal :res_time
       t.string :status
-      t.string :status_message
+      t.text :status_message
+      t.text :submitted_query
 
       t.references :layer, index: true
 

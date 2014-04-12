@@ -2,9 +2,11 @@
   <thead>
     <tr>
       <th></th>
-      <th>Layer Name</td>
-      <th>Geoserver Name</td>
-      <th>Status</td>
+      <th>Layer Name</th>
+      <th>Geoserver Name</th>
+      <th>Access</th>
+      <th>Status</th>
+      <th># Status Checks</th>
     </tr>
   </thead>
 
@@ -13,9 +15,9 @@
     <td><%= link_to 'Check Status', {controller: 'layers', action: 'check_status', id: layer.id}, data: { no_turbolink: true }, target: '_blank' %></td>
     <td><%= layer.name %></td>
     <td><%= layer.geoserver_layername %></td>
-    <td><%= status_class(layer.statuses.last.status) unless layer.statuses.last.nil? %></td>
-
-
+    <td><%= layer.access %></td>
+    <td><%= link_to status_class(layer.statuses.last.status, layer.statuses.last.status), layer.statuses.last unless layer.statuses.last.nil? %></td>
+    <td><%= layer.statuses.length %></td>
 
   </tr>
 <% end %>
