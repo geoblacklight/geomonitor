@@ -5,8 +5,7 @@ class Status < ActiveRecord::Base
   belongs_to :layer
 
   def self.run_check(layer)
-    puts layer.inspect
-
+    puts "Checking #{layer.geoserver_layername}"
     options = {
       'SERVICE' => 'WMS',
       'VERSION' => '1.1.1',
@@ -23,12 +22,11 @@ class Status < ActiveRecord::Base
     uri = URI(layer.host.url + '/wms')
     uri.query = URI.encode_www_form(options)
 
-
     start_time = Time.now
     resource = RestClient::Resource.new(
       layer.host.url + '/wms',
-      timeout: 5,
-      open_timeout: 5
+      timeout: 10,
+      open_timeout: 10
     )
 
     begin
@@ -44,7 +42,6 @@ class Status < ActiveRecord::Base
     end
 
     elapsed_time = Time.now - start_time
-    puts elapsed_time
 
     if res
       case res.headers[:content_type]
@@ -61,7 +58,7 @@ class Status < ActiveRecord::Base
       end
     end
 
-    puts res_code
+    puts "Status: #{status} #{res_code} in #{elapsed_time} seconds"
 
     Status.create(res_code: res_code,
                   # res_message: res.message,

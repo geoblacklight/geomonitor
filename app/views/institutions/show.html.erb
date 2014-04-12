@@ -1,0 +1,30 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</td>
+      <th>URL</td>
+      <th>Institution</td>
+      <th>Number of Layers</th>
+      <th>Status #</th>
+      <th>Status %</th>
+    </tr>
+  </thead>
+
+<% @hosts.each do |host| %>
+  <tr>
+    <td><%= link_to host.name, host %></td>
+    <td><%= link_to host.url, host %></td>
+    <td><%= link_to host.institution.name, host.institution  %></td>
+    <td><%= number_with_delimiter(host.layers.length) %></td>
+    <td><%= format_status_num(host.status) %></td>
+    <td><%= format_status_percent(host.status, host.layers.length) %></td>
+  </tr>
+<% end %>
+  <tfoot>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><%= number_with_delimiter(Institution.find(params[:id]).layer_count) %></td>
+    <td></td>
+    <td></td>
+</table>
