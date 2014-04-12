@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20140412001319) do
   end
 
   add_index "hosts", ["institution_id"], name: "index_hosts_on_institution_id"
+  add_index "hosts", ["url"], name: "index_hosts_on_url", unique: true
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -30,9 +31,14 @@ ActiveRecord::Schema.define(version: 20140412001319) do
     t.datetime "updated_at"
   end
 
+  add_index "institutions", ["name"], name: "index_institutions_on_name", unique: true
+
   create_table "layers", force: true do |t|
     t.string   "name"
+    t.string   "geoserver_layername"
+    t.string   "access"
     t.text     "description"
+    t.string   "bbox"
     t.integer  "host_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -41,7 +47,11 @@ ActiveRecord::Schema.define(version: 20140412001319) do
   add_index "layers", ["host_id"], name: "index_layers_on_host_id"
 
   create_table "statuses", force: true do |t|
+    t.string   "res_code"
+    t.string   "res_message"
+    t.decimal  "res_time"
     t.string   "status"
+    t.string   "status_message"
     t.integer  "layer_id"
     t.datetime "created_at"
     t.datetime "updated_at"

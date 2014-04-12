@@ -6,9 +6,19 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
-
-<%= yield %>
-
+<body data-no-turbolink>
+<div class="container">
+  <div class="col-md-8">
+    <h1>GeoMonitor</h1>
+    <h3>Keeping an eye on your Geoserver</h3>
+  </div>
+  <div class="col-md-4">
+    <%= render 'templates/nav' %>
+  </div>
+</div>
+<div class="container">
+  <%= yield %>
+</div>
+</div>
 </body>
 </html>

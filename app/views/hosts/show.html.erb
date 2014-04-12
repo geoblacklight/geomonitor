@@ -1,0 +1,22 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Layer Name</td>
+      <th>Geoserver Name</td>
+      <th>Status</td>
+    </tr>
+  </thead>
+
+<% @layers.each do |layer| %>
+  <tr>
+    <td><%= link_to 'Check Status', {controller: 'layers', action: 'check_status', id: layer.id}, data: { no_turbolink: true }, target: '_blank' %></td>
+    <td><%= layer.name %></td>
+    <td><%= layer.geoserver_layername %></td>
+    <td><%= status_class(layer.statuses.last.status) unless layer.statuses.last.nil? %></td>
+
+
+
+  </tr>
+<% end %>
+</table>

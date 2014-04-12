@@ -1,0 +1,19 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</td>
+      <th>URL</td>
+      <th>Institution</td>
+      <th>Number of Layers</th>
+    </tr>
+  </thead>
+
+<% @hosts.each do |host| %>
+  <tr>
+    <td><%= link_to host.name, host %></td>
+    <td><%= link_to host.url, host %></td>
+    <td><%= link_to host.institution.name, host.institution  %></td>
+    <td><%= host.layers.length %></td>
+  </tr>
+<% end %>
+</table>

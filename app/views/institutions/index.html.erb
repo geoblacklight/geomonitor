@@ -1,0 +1,17 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Institution</td>
+      <th>Number of Hosts</th>
+      <th>Number of Layers</th>
+    </tr>
+  </thead>
+
+<% @institutions.each do |institution| %>
+  <tr>
+    <td><%= institution.name %></td>
+    <td><%= institution.hosts.count %></td>
+    <td></td>
+  </tr>
+<% end %>
+</table>
