@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20140412001319) do
     t.string   "status"
     t.text     "status_message"
     t.text     "submitted_query"
+    t.boolean  "latest"
     t.integer  "layer_id"
     t.datetime "created_at"
     t.datetime "updated_at"

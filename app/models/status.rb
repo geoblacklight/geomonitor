@@ -5,7 +5,7 @@ class Status < ActiveRecord::Base
   belongs_to :layer
 
   def self.run_check(layer)
-    puts "Checking #{layer.geoserver_layername}"
+    puts "Checking #{layer.name}"
     options = {
       'SERVICE' => 'WMS',
       'VERSION' => '1.1.1',
@@ -60,12 +60,21 @@ class Status < ActiveRecord::Base
 
     puts "Status: #{status} #{res_code} in #{elapsed_time} seconds"
 
-    Status.create(res_code: res_code,
-                  # res_message: res.message,
-                  res_time: elapsed_time,
-                  status: status,
-                  status_message: body,
-                  submitted_query: uri.to_s,
-                  layer_id: layer.id)
+    current = Status.create(res_code: res_code,
+                            latest: true,
+                            res_time: elapsed_time,
+                            status: status,
+                            status_message: body,
+                            submitted_query: uri.to_s,
+                            layer_id: layer.id)
+
+    old_statuses = Status.where(layer_id: layer.id)
+                    .where('id != ?', current.id)
+    if old_statuses.length > 0
+      old_statuses.each do |old|
+        old.latest = false
+        old.save
+      end
+    end
   end
 end

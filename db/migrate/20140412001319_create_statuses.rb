@@ -7,6 +7,7 @@ class CreateStatuses < ActiveRecord::Migration
       t.string :status
       t.text :status_message
       t.text :submitted_query
+      t.boolean :latest
 
       t.references :layer, index: true
 
