@@ -25,6 +25,6 @@
     <td></td>
     <td></td>
     <td><%= number_with_delimiter(Layer.all.count) %></td>
-    <td><%= number_with_delimiter(Status.distinct(:layer_id).count) %></td>
-    <td></td>
+    <td><%= number_with_delimiter(Status.where(latest: true).distinct(:layer_id).count) %></td>
+    <td><%= number_to_percentage((Status.where(latest: true).distinct(:layer_id).count.to_f/Layer.all.count.to_f)*100, precision: 1) %></td>
 </table>
