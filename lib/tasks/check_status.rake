@@ -5,9 +5,15 @@
       status_count = Status.all().count
       layer_count = Layer.all().count
 
-      l = Layer.where('id NOT IN (SELECT DISTINCT(layer_id) FROM statuses)')
+      # Get layers that have not been status checked
+      layers = Layer.where('id NOT IN (SELECT DISTINCT(layer_id) FROM statuses)')
 
-      l.shuffle.each do |layer|
+      layers.shuffle.each do |layer|
+
+        # Skip if host is not pingable
+        next unless layer.host.pings.last.status
+
+        # Skip if access is restricted
         next if layer[:access] == 'Restricted'
         Status.run_check(layer)
       end
@@ -16,7 +22,14 @@
     task :check_all => :environment do
       layers = Layer.all()
       layers.shuffle.each do |layer|
+
+        # Skip if host is not pingable
+        next unless layer.host.pings.last.status
+
+        # Skip if access is restricted
         next if layer[:access] == 'Restricted'
+
+        # Run status check
         Status.run_check(layer)
       end
     end
@@ -34,8 +47,8 @@
   namespace :ping do
     desc 'Ping all hosts'
     task :hosts => :environment do
-      h = Host.all()
-      h.shuffle.each do |host|
+      hosts = Host.all()
+      hosts.shuffle.each do |host|
         Ping.check_status(host)
       end
     end
