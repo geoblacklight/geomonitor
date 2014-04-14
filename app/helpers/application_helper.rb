@@ -47,4 +47,13 @@ module ApplicationHelper
     end
     return html.html_safe
   end
+
+  def ping_status(status)
+    case status
+    when true
+      content_tag :span, '', class: 'glyphicon glyphicon-ok text-success'
+    when false
+      content_tag :span, '', class: 'glyphicon glyphicon-remove text-danger'
+    end
+  end
 end

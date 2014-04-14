@@ -1,6 +1,7 @@
 class Host < ActiveRecord::Base
   belongs_to :institution
   has_many :layers
+  has_many :pings
 
   def status
     layers = Layer.where(host_id: self.id).ids

@@ -5,7 +5,7 @@
 #   gem 'sqlite3'
 development:
   adapter: postgresql
-  encoding: unicode
+  encoding: utf8
   database: geomonitor-dev
   pool: 5
   timeout: 5000
@@ -21,7 +21,7 @@ test:
 
 production:
   adapter: postgresql
-  encoding: unicode
+  encoding: utf8
   database: geomonitor-prod
   pool: 5
   timeout: 5000

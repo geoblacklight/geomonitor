@@ -30,3 +30,13 @@
       end
     end
   end
+
+  namespace :ping do
+    desc 'Ping all hosts'
+    task :hosts => :environment do
+      h = Host.all()
+      h.shuffle.each do |host|
+        Ping.check_status(host)
+      end
+    end
+  end

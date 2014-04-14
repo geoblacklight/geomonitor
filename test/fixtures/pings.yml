@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  status: false
+  latest: false
+  host_id: 
+
+two:
+  status: false
+  latest: false
+  host_id: 
