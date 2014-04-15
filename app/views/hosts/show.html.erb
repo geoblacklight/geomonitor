@@ -12,7 +12,11 @@
 
 <% @layers.each do |layer| %>
   <tr>
-    <td><%= link_to 'Check Status', {controller: 'layers', action: 'check_status', id: layer.id}, data: { no_turbolink: true }, target: '_blank' %></td>
+    <td>
+      <%= link_to content_tag(:span, '', class: 'glyphicon glyphicon-wrench'), {controller: 'layers', action: 'check_status', id: layer.id}, data: { no_turbolink: true }, target: '_blank', title: 'Check Status' %>
+       |
+      <%= link_to content_tag(:span, '', class: 'glyphicon glyphicon-globe'), "http://ogpapp-test.stanford.edu/catalog/#{layer.name}", target: '_blank', title: 'View in GeoBlacklight' %>
+    </td>
     <td><%= layer.name %></td>
     <td><%= layer.geoserver_layername %></td>
     <td><%= layer.access %></td>
