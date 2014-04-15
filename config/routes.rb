@@ -9,6 +9,8 @@ Geomonitor::Application.routes.draw do
 
   get 'layers/:id/check_status' => 'layers#check_status'
 
+  root 'dashboard#index'
+
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
