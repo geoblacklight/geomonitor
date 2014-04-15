@@ -14,7 +14,7 @@ class Status < ActiveRecord::Base
       'REQUEST' => 'GetMap',
       'LAYERS' => layer.geoserver_layername,
       'STYLES' => '',
-      'SRS' => 'EPSG:4326',
+      'SRS' => 'EPSG:3857',
       'BBOX' => layer.bbox.gsub(' ', ', '),
       'WIDTH' => '256',
       'HEIGHT' => '256',
