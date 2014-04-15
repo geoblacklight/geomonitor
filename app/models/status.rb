@@ -6,7 +6,7 @@ class Status < ActiveRecord::Base
   belongs_to :layer
 
   def self.run_check(layer)
-    Geomonitor::Tools.verbose_sleep(rand(1..5))
+    # Geomonitor::Tools.verbose_sleep(rand(1..5))
     puts "Checking #{layer.name}"
     options = {
       'SERVICE' => 'WMS',
@@ -14,11 +14,13 @@ class Status < ActiveRecord::Base
       'REQUEST' => 'GetMap',
       'LAYERS' => layer.geoserver_layername,
       'STYLES' => '',
+      'CRS' => 'EPSG:900913',
       'SRS' => 'EPSG:3857',
-      'BBOX' => layer.bbox.gsub(' ', ', '),
+      'BBOX' => Geomonitor::Tools.bbox_format(layer.bbox),
       'WIDTH' => '256',
       'HEIGHT' => '256',
-      'FORMAT' => 'image/png'
+      'FORMAT' => 'image/png',
+      'TILED' => true
     }
 
     uri = URI(layer.host.url + '/wms')
@@ -71,7 +73,9 @@ class Status < ActiveRecord::Base
                             layer_id: layer.id)
 
     old_statuses = Status.where(layer_id: layer.id)
-                    .where('id != ?', current.id)
+                         .where('id != ?', current.id)
+                         .where(latest: true)
+
     if old_statuses.length > 0
       old_statuses.each do |old|
         old.latest = false
