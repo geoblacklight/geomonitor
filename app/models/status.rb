@@ -16,8 +16,8 @@ class Status < ActiveRecord::Base
       'STYLES' => '',
       'SRS' => 'EPSG:4326',
       'BBOX' => layer.bbox.gsub(' ', ', '),
-      'WIDTH' => '400',
-      'HEIGHT' => '400',
+      'WIDTH' => '256',
+      'HEIGHT' => '256',
       'FORMAT' => 'image/png'
     }
 
