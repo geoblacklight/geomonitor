@@ -1,13 +1,12 @@
 require 'net/http'
 require 'rest_client'
+require 'geomonitor'
 
 class Status < ActiveRecord::Base
   belongs_to :layer
 
   def self.run_check(layer)
-    sleep_time = rand(1..5)
-    puts "Waiting for #{sleep_time} seconds"
-    sleep(sleep_time)
+    Geomonitor::Tools.verbose_sleep(rand(1..5))
     puts "Checking #{layer.name}"
     options = {
       'SERVICE' => 'WMS',
