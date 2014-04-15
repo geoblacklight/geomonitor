@@ -3,6 +3,6 @@ class Layer < ActiveRecord::Base
   has_many :statuses
 
   def current_status
-    Status.where(layer_id: self.id).last
+    Status.where(layer_id: id).where(latest: true).last
   end
 end

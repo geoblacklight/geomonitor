@@ -16,7 +16,7 @@
     <td><%= layer.name %></td>
     <td><%= layer.geoserver_layername %></td>
     <td><%= layer.access %></td>
-    <td><%= link_to status_class(layer.statuses.last.status, layer.statuses.last.status), layer.statuses.last unless layer.statuses.last.nil? %></td>
+    <td><%= link_to status_class(layer.current_status.status, layer.current_status.status), layer.current_status unless layer.current_status.nil? %></td>
     <td><%= layer.statuses.length %></td>
 
   </tr>
