@@ -6,7 +6,7 @@ class Status < ActiveRecord::Base
   belongs_to :layer
 
   def self.run_check(layer)
-    # Geomonitor::Tools.verbose_sleep(rand(1..5))
+    Geomonitor::Tools.verbose_sleep(rand(1..5))
     puts "Checking #{layer.name}"
     options = {
       'SERVICE' => 'WMS',
