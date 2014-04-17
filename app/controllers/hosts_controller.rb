@@ -4,6 +4,6 @@ class HostsController < ApplicationController
   end
 
   def show
-    @layers = Layer.where(host_id: params[:id]).includes(:latest_status)
+    @layers = Layer.where(host_id: params[:id]).includes(:latest_status).page(params[:page])
   end
 end
