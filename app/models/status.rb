@@ -3,7 +3,7 @@ require 'rest_client'
 require 'geomonitor'
 
 class Status < ActiveRecord::Base
-  belongs_to :layer, counter_cache: true
+  belongs_to :layer, counter_cache: true, touch: true
 
   def self.run_check(layer)
     Geomonitor::Tools.verbose_sleep(rand(1..5))
