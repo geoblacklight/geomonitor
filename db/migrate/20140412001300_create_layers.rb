@@ -7,6 +7,7 @@ class CreateLayers < ActiveRecord::Migration
       t.text :description
       t.string :bbox
       t.references :host, index: true
+      t.integer :statuses_count
 
       t.timestamps
     end

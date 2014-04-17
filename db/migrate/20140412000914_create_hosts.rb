@@ -5,6 +5,8 @@ class CreateHosts < ActiveRecord::Migration
       t.text :description
       t.string :url
       t.references :institution, index: true
+      t.integer :layers_count
+      t.integer :pings_count
 
       t.timestamps
     end

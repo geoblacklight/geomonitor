@@ -9,7 +9,13 @@ class Layer < ActiveRecord::Base
     statuses
     # Status.where(layer_id: id).where(latest: true).last
   end
-  def status_count
-    Status.where(layer_id: id).count()
+
+  def recent_status
+    last_seven = Status.where(layer_id: id).last(7)
+    ok_count = last_seven.count { |stat| stat.status == 'OK' }
+    { ok: ok_count.to_f, count: last_seven.count.to_f }
   end
+  # def status_count
+  #   Status.where(layer_id: id).count
+  # end
 end

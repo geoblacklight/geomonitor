@@ -1,5 +1,5 @@
 class Ping < ActiveRecord::Base
-  belongs_to :host
+  belongs_to :host, counter_cache: true
 
   def self.check_status(host)
     puts "Pinging #{host.url} ..."

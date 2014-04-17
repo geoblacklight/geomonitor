@@ -56,4 +56,49 @@ module ApplicationHelper
       content_tag :span, '', class: 'glyphicon glyphicon-remove text-danger'
     end
   end
+
+  def recent_status_badge(status)
+    if status[:count] == 0
+      status_per = 0
+    else
+      status_per = status[:ok] / status[:count]
+    end
+    image_tag "http://img.shields.io/badge/Recent #{status[:count].to_i}-#{number_to_percentage(status_per*100, precision: 1)}-#{percentage_to_color(status_per)}.svg"
+  end
+
+  def latest_status_badge(status)
+    puts status
+    image_tag "http://img.shields.io/badge/Latest-#{status.status}-#{status_to_color(status.status)}.svg"
+  end
+
+  def status_to_color(status)
+    case status
+    when 'OK'
+      return 'brightgreen'
+    when '??'
+      return 'yellow'
+    when 'FAIL'
+      return 'red'
+    end
+  end
+
+  def percentage_to_color(percentage)
+    percentage = (percentage * 100).ceil
+    case percentage
+    when 100
+      return 'brightgreen'
+    when 0..1
+      return 'red'
+    when 1..40
+      return 'orange'
+    when 40..60
+      return 'yellow'
+    when 60..90
+      return 'yellowgreen'
+    when 90..100
+      return 'green'
+    else
+      return 'blue'
+    end
+  end
 end

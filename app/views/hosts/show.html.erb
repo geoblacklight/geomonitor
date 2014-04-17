@@ -10,6 +10,7 @@
       <th>Geoserver Name</th>
       <th>Access</th>
       <th>Status</th>
+      <th>Recent Status</th>
     </tr>
   </thead>
 
@@ -23,8 +24,8 @@
     <td><%= layer.name %></td>
     <td><%= layer.geoserver_layername %></td>
     <td><%= layer.access %></td>
-    <td><%= link_to status_class(layer.latest_status.status, layer.latest_status.status), layer.latest_status unless layer.latest_status.nil? %></td>
-
+    <td><%= link_to latest_status_badge(layer.latest_status), layer.latest_status unless layer.latest_status.nil? %></td>
+    <td><%= recent_status_badge(layer.recent_status) unless layer.recent_status.nil? %></td>
   </tr>
 <% end %>
 </table>
