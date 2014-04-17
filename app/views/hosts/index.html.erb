@@ -15,9 +15,9 @@
     <td><%= ping_status(host.pings.last.status) unless host.pings.last.nil? %> <%= link_to host.name, host %></td>
     <td><%= link_to host.url, host %></td>
     <td><%= link_to host.institution.name, host.institution  %></td>
-    <td><%= number_with_delimiter(host.layers.length) %></td>
+    <td><%= number_with_delimiter(host.layers.count) %></td>
     <td><%= format_status_num(host.status) %></td>
-    <td><%= format_status_percent(host.status, host.layers.length) %></td>
+    <td><%= format_status_percent(host.status, host.layers.count) %></td>
   </tr>
 <% end %>
   <tfoot>
