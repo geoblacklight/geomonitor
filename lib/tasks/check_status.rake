@@ -11,6 +11,7 @@
       layers.shuffle.each do |layer|
 
         # Skip if host is not pingable
+        next if layer.host.pings.last.nil?
         next unless layer.host.pings.last.status
 
         # Skip if access is restricted
