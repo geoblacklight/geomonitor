@@ -68,7 +68,7 @@ module ApplicationHelper
 
   def latest_status_badge(status)
     puts status
-    image_tag "http://img.shields.io/badge/Latest-#{status.status}-#{status_to_color(status.status)}.svg"
+    image_tag "http://img.shields.io/badge/Latest-#{replace_question(status.status)}-#{status_to_color(status.status)}.svg"
   end
 
   def status_to_color(status)
@@ -79,6 +79,14 @@ module ApplicationHelper
       return 'yellow'
     when 'FAIL'
       return 'red'
+    end
+  end
+
+  def replace_question(str)
+    if str == "??"
+      return "%3F%3F"
+    else
+      return str
     end
   end
 
