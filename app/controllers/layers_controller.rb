@@ -14,7 +14,7 @@ class LayersController < ApplicationController
 
   def show
     @layer = Layer.find(params[:id])
-    @statuses = Status.where(layer_id: params[:id]).order(updated_at: :desc)
+    @statuses = Status.where(layer_id: params[:id]).order(created_at: :desc)
   end
 
 end
