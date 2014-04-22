@@ -1,0 +1,23 @@
+<h3><%= @layer.name %> <%= latest_status(@layer) %> <%= recent_status(@layer) %></h3>
+<h4><%= @layer.geoserver_layername %></h4>
+
+<table class="table table-hover table-responsive">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Response Time</th>
+      <th>Checked At</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+<% @statuses.each do |status| %>
+  <tr>
+    <td><%= link_to status.status, status %></td>
+    <td><%= status.res_time %></td>
+    <td><%= status.created_at %></td>
+    <td><%= status.status_message %></td>
+  </tr>
+
+<% end %>
+</table>

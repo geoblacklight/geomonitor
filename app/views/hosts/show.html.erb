@@ -21,11 +21,11 @@
        |
       <%= link_to content_tag(:span, '', class: 'glyphicon glyphicon-globe'), "http://ogpapp-test.stanford.edu/catalog/#{layer.name}", target: '_blank', title: 'View in GeoBlacklight' %>
     </td>
-    <td><%= layer.name %></td>
+    <td><%= link_to layer.name, layer %></td>
     <td><%= layer.geoserver_layername %></td>
     <td><%= layer.access %></td>
-    <td><%= link_to latest_status_badge(layer.latest_status), layer.latest_status unless layer.latest_status.nil? %></td>
-    <td><%= recent_status_badge(layer.recent_status) unless layer.recent_status.nil? %></td>
+    <td><%= latest_status(layer) %></td>
+    <td><%= recent_status(layer) %></td>
   </tr>
 <% end %>
 </table>
