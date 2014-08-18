@@ -2,8 +2,7 @@ class Layer < ActiveRecord::Base
   belongs_to :host, counter_cache: true
   has_many :statuses
   has_one :latest_status,
-    class_name: 'Status',
-    conditions: ['latest = ?', true]
+    -> (object) { where("latest = ?", true) }, :class_name => 'Status'
 
   def current_status
     statuses
