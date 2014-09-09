@@ -11,6 +11,8 @@ set :home_directory, "/home/#{fetch(:user)}"
 
 set :deploy_to, "#{fetch(:home_directory)}/#{fetch(:application)}"
 
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
 # Default value for :scm is :git
 # set :scm, :git
 
