@@ -1,5 +1,10 @@
 cache: bundler
 language: ruby
 sudo: false
+rvm:
+  - 2.1
 notifications:
   email: false
+script:
+  - RAILS_ENV=test bundle exec rake db:migrate
+  - bundle exec rake
