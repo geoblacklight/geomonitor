@@ -178,6 +178,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    sqlite3 (1.3.10)
     sshkit (1.5.1)
       colorize
       net-scp (>= 1.1.2)
@@ -226,10 +227,12 @@ DEPENDENCIES
   pg
   poltergeist
   rails (= 4.1.5)
+  rake
   rest-client
   rspec-rails
   sass-rails (~> 4.0.3)
   sdoc
+  sqlite3
   therubyracer
   uglifier (>= 1.3.0)
   whenever

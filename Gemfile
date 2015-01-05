@@ -57,6 +57,8 @@ group :test do
   gem 'capybara'
   gem 'poltergeist'
   gem 'database_cleaner'
+  gem 'sqlite3'
+  gem 'rake'
 end
 
 group :deployment do
