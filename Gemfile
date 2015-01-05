@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.5'
+gem 'rails', '4.2.0'
 
 gem 'bootstrap-sass'
 
@@ -45,7 +45,7 @@ group :doc do
 end
 
 group :development do
-  gem 'bullet'
+  gem 'bullet', '~> 4.14.0'
 end
 
 group :development, :test do
