@@ -1,4 +1,6 @@
 class Layer < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name, use: [:slugged, :finders]
   belongs_to :host, counter_cache: true
   has_many :statuses
   has_one :latest_status,
