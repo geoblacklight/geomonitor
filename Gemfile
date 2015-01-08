@@ -17,7 +17,7 @@ gem 'kaminari'
 gem 'kaminari-bootstrap', '3.0.1'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails', '~> 5.0.1'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -62,10 +62,10 @@ group :test do
 end
 
 group :deployment do
-  gem 'capistrano', '~> 3.0'
+  gem 'capistrano', '~> 3.2.1'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
-  gem 'lyberteam-capistrano-devel'
+  gem 'lyberteam-capistrano-devel', '3.1.0'
 end
 
 # Use ActiveModel has_secure_password
