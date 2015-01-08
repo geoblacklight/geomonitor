@@ -13,21 +13,18 @@
 
 ActiveRecord::Schema.define(version: 20150106002846) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "friendly_id_slugs", force: :cascade do |t|
-    t.string   "slug",           limit: 255, null: false
-    t.integer  "sluggable_id",               null: false
+    t.string   "slug",                      null: false
+    t.integer  "sluggable_id",              null: false
     t.string   "sluggable_type", limit: 50
-    t.string   "scope",          limit: 255
+    t.string   "scope"
     t.datetime "created_at"
   end
 
-  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
-  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
-  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
-  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "hosts", force: :cascade do |t|
     t.string   "name",           limit: 255
@@ -40,8 +37,8 @@ ActiveRecord::Schema.define(version: 20150106002846) do
     t.datetime "updated_at"
   end
 
-  add_index "hosts", ["institution_id"], name: "index_hosts_on_institution_id", using: :btree
-  add_index "hosts", ["url"], name: "index_hosts_on_url", unique: true, using: :btree
+  add_index "hosts", ["institution_id"], name: "index_hosts_on_institution_id"
+  add_index "hosts", ["url"], name: "index_hosts_on_url", unique: true
 
   create_table "institutions", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -49,7 +46,7 @@ ActiveRecord::Schema.define(version: 20150106002846) do
     t.datetime "updated_at"
   end
 
-  add_index "institutions", ["name"], name: "index_institutions_on_name", unique: true, using: :btree
+  add_index "institutions", ["name"], name: "index_institutions_on_name", unique: true
 
   create_table "layers", force: :cascade do |t|
     t.string   "name",                limit: 255
@@ -64,7 +61,7 @@ ActiveRecord::Schema.define(version: 20150106002846) do
     t.string   "slug"
   end
 
-  add_index "layers", ["host_id"], name: "index_layers_on_host_id", using: :btree
+  add_index "layers", ["host_id"], name: "index_layers_on_host_id"
 
   create_table "pings", force: :cascade do |t|
     t.boolean  "status"
@@ -74,7 +71,7 @@ ActiveRecord::Schema.define(version: 20150106002846) do
     t.datetime "updated_at"
   end
 
-  add_index "pings", ["host_id"], name: "index_pings_on_host_id", using: :btree
+  add_index "pings", ["host_id"], name: "index_pings_on_host_id"
 
   create_table "statuses", force: :cascade do |t|
     t.string   "res_code",        limit: 255
@@ -89,6 +86,6 @@ ActiveRecord::Schema.define(version: 20150106002846) do
     t.datetime "updated_at"
   end
 
-  add_index "statuses", ["layer_id"], name: "index_statuses_on_layer_id", using: :btree
+  add_index "statuses", ["layer_id"], name: "index_statuses_on_layer_id"
 
 end
