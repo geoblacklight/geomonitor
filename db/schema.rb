@@ -11,12 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140414183409) do
+ActiveRecord::Schema.define(version: 20150106002846) do
 
-  create_table "hosts", force: true do |t|
-    t.string   "name"
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string   "slug",           limit: 255, null: false
+    t.integer  "sluggable_id",               null: false
+    t.string   "sluggable_type", limit: 50
+    t.string   "scope",          limit: 255
+    t.datetime "created_at"
+  end
+
+  add_index "friendly_id_slugs", ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, using: :btree
+  add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
+  add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
+
+  create_table "hosts", force: :cascade do |t|
+    t.string   "name",           limit: 255
     t.text     "description"
-    t.string   "url"
+    t.string   "url",            limit: 255
     t.integer  "institution_id"
     t.integer  "layers_count"
     t.integer  "pings_count"
@@ -24,32 +40,33 @@ ActiveRecord::Schema.define(version: 20140414183409) do
     t.datetime "updated_at"
   end
 
-  add_index "hosts", ["institution_id"], name: "index_hosts_on_institution_id"
-  add_index "hosts", ["url"], name: "index_hosts_on_url", unique: true
+  add_index "hosts", ["institution_id"], name: "index_hosts_on_institution_id", using: :btree
+  add_index "hosts", ["url"], name: "index_hosts_on_url", unique: true, using: :btree
 
-  create_table "institutions", force: true do |t|
-    t.string   "name"
+  create_table "institutions", force: :cascade do |t|
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "institutions", ["name"], name: "index_institutions_on_name", unique: true
+  add_index "institutions", ["name"], name: "index_institutions_on_name", unique: true, using: :btree
 
-  create_table "layers", force: true do |t|
-    t.string   "name"
-    t.string   "geoserver_layername"
-    t.string   "access"
+  create_table "layers", force: :cascade do |t|
+    t.string   "name",                limit: 255
+    t.string   "geoserver_layername", limit: 255
+    t.string   "access",              limit: 255
     t.text     "description"
-    t.string   "bbox"
+    t.string   "bbox",                limit: 255
     t.integer  "host_id"
     t.integer  "statuses_count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug"
   end
 
-  add_index "layers", ["host_id"], name: "index_layers_on_host_id"
+  add_index "layers", ["host_id"], name: "index_layers_on_host_id", using: :btree
 
-  create_table "pings", force: true do |t|
+  create_table "pings", force: :cascade do |t|
     t.boolean  "status"
     t.boolean  "latest"
     t.integer  "host_id"
@@ -57,13 +74,13 @@ ActiveRecord::Schema.define(version: 20140414183409) do
     t.datetime "updated_at"
   end
 
-  add_index "pings", ["host_id"], name: "index_pings_on_host_id"
+  add_index "pings", ["host_id"], name: "index_pings_on_host_id", using: :btree
 
-  create_table "statuses", force: true do |t|
-    t.string   "res_code"
-    t.string   "res_message"
+  create_table "statuses", force: :cascade do |t|
+    t.string   "res_code",        limit: 255
+    t.string   "res_message",     limit: 255
     t.decimal  "res_time"
-    t.string   "status"
+    t.string   "status",          limit: 255
     t.text     "status_message"
     t.text     "submitted_query"
     t.boolean  "latest"
@@ -72,6 +89,6 @@ ActiveRecord::Schema.define(version: 20140414183409) do
     t.datetime "updated_at"
   end
 
-  add_index "statuses", ["layer_id"], name: "index_statuses_on_layer_id"
+  add_index "statuses", ["layer_id"], name: "index_statuses_on_layer_id", using: :btree
 
 end
