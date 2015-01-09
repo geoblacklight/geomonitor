@@ -5,7 +5,7 @@
 
 # Example:
 #
-# set :output, "/path/to/my/cron_log.log"
+set :output, {:error => 'log/error.log', :standard => 'log/cron.log'}
 #
 every '15 * * * *' do
   rake 'layers:check_stanford'
