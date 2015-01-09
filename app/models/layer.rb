@@ -6,9 +6,11 @@ class Layer < ActiveRecord::Base
   has_one :latest_status,
     -> (object) { where("latest = ?", true) }, :class_name => 'Status'
 
+  ##
+  # Finds the current status of a given layer
+  #
   def current_status
-    statuses
-    # Status.where(layer_id: id).where(latest: true).last
+    Status.find_by(layer_id: id, latest: true).status
   end
 
   def recent_status
@@ -16,7 +18,17 @@ class Layer < ActiveRecord::Base
     ok_count = last_seven.count { |stat| stat.status == 'OK' }
     { ok: ok_count.to_f, count: last_seven.count.to_f }
   end
-  # def status_count
-  #   Status.where(layer_id: id).count
-  # end
+
+  ##
+  # Query Layer with a particular current status, if param
+  # is nil then return all Layer
+  # @param [String] Status set from a response examples: 'OK', '??', 'FAIL'
+  #
+  def self.with_current_status(status)
+    if status.nil?
+      all
+    else
+      joins(:statuses).where(statuses: { latest: true, status: status })
+    end
+  end
 end
