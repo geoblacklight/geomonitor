@@ -84,6 +84,22 @@ every '15 * * * *' do
 end
 ```
 
+## REST API
+
+Documented support RESTful paths support json requests.
+
+#### /hosts
+HTTP Verb | Path | Description
+---- | ----
+GET | /hosts/:id | Get a list of Layers on a given Host [:id]
+
+Supported parameters:
+ - `format` 'html' and 'json'
+ - `status` 'OK', '??', and 'FAIL'
+ - `page` 1, 2, 3, etc.
+
+Example request:
+http://127.0.0.1:3000/hosts/1?format=json&status=OK&page=3
 
 
 ## Contributing

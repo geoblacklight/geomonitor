@@ -37,5 +37,12 @@ describe Layer do
     it 'with bbox' do
       @layer.bbox.should eq('73.258324 29.52631 78.859703 32.90303')
     end
+    describe 'current_status' do
+      it 'returns the last status' do
+        first = create(:status, layer_id: @layer.id, status: 'FAIL', latest: false)
+        second = create(:status, layer_id: @layer.id, status: 'OK', latest: true)
+        expect(@layer.current_status).to eq second.status
+      end
+    end
   end
 end
