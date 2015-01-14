@@ -83,4 +83,12 @@ class Status < ActiveRecord::Base
       end
     end
   end
+
+  def self.status_groups
+    select(:status).group(:status)
+  end
+
+  def self.latest
+    where(latest: true)
+  end
 end

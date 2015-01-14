@@ -17,6 +17,9 @@ class Ping < ActiveRecord::Base
         old.save
       end
     end
+  end
 
+  def self.recent_status
+    last.status if last
   end
 end

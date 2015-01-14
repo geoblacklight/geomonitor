@@ -3,14 +3,20 @@ class Host < ActiveRecord::Base
   has_many :layers
   has_many :pings
 
+  delegate :name,
+           to: :institution,
+           prefix: true
+
   def status
-    layers = Layer.where(host_id: id).ids
-    status = Status.where(layer_id: layers)
+    Layer.where(host_id: id).ids
+    Status.where(layer_id: layers)
                    .where(latest: true)
                    .select(:status)
                    .group(:status)
                    .count
+  end
 
-    status
+  def last_ping_status
+    pings.recent_status
   end
 end
