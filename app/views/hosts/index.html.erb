@@ -12,12 +12,12 @@
 
 <% @hosts.each do |host| %>
   <tr>
-    <td><%= ping_status(host.pings.last.status) unless host.pings.last.nil? %> <%= link_to host.name, host %></td>
+    <td><%= ping_status(host.last_ping_status) if host.last_ping_status %> <%= link_to host.name, host %></td>
     <td><%= link_to host.url, host %></td>
-    <td><%= link_to host.institution.name, host.institution  %></td>
-    <td><%= number_with_delimiter(host.layers.count) %></td>
-    <td><%= format_status_num(host.status) %></td>
-    <td><%= format_status_percent(host.status, host.layers.count) %></td>
+    <td><%= link_to host.institution_name, host.institution  %></td>
+    <td><%= number_with_delimiter(host.layers_count) %></td>
+    <td><%= format_status_num(host.overall_status) %></td>
+    <td><%= format_status_percent(host.overall_status, host.layers.count) %></td>
   </tr>
 <% end %>
   <tfoot>
@@ -25,17 +25,17 @@
     <td></td>
     <td></td>
     <td><%= number_with_delimiter(Layer.all.count) %></td>
-    <td><%= number_with_delimiter(Status.where(latest: true).distinct(:layer_id).count) %></td>
-    <td><%= number_to_percentage((Status.where(latest: true).distinct(:layer_id).count.to_f/Layer.all.count.to_f)*100, precision: 1) %></td>
+    <td><%= number_with_delimiter(Status.latest.distinct(:layer_id).count) %></td>
+    <td><%= number_to_percentage((Status.latest.distinct(:layer_id).count.to_f/Layer.all.count.to_f)*100, precision: 1) %></td>
 </table>
 
 <table class="table table-responsive lead">
   <tr>
     <th>Total checked:</th>
-    <td><%= format_status_num(Status.where(latest: true).select(:status).group(:status).count) %></td>
+    <td><%= format_status_num(Status.latest.status_groups.count) %></td>
   </tr>
   <tr>
     <th>Availability:</th>
-    <td><%= format_status_percent(Status.where(latest: true).select(:status).group(:status).count, Status.where(latest: true).count) %></td>
+    <td><%= format_status_percent(Status.latest.status_groups.count, Status.latest.count) %></td>
   </tr>
 </table>

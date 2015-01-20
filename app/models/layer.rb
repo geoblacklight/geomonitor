@@ -19,6 +19,13 @@ class Layer < ActiveRecord::Base
     { ok: ok_count.to_f, count: last_seven.count.to_f }
   end
 
+  def self.current_recent_status(params)
+    where(host_id: params[:id])
+         .with_current_status(params[:status])
+         .includes(:latest_status)
+         .order(updated_at: :desc)
+  end
+
   ##
   # Query Layer with a particular current status, if param
   # is nil then return all Layer
