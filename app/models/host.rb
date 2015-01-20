@@ -20,6 +20,15 @@ class Host < ActiveRecord::Base
     pings.recent_status
   end
 
+  def layers_count(options = {})
+    if options[:force_update]
+      Rails.cache.write("host/#{id}/overall_status", calculate_layers_count)
+    end
+    Rails.cache.fetch("host/#{id}/layers_count", expires_in: 24.hours) do
+      calculate_layers_count
+    end
+  end
+
   private
 
   def calculate_overall_status
@@ -28,5 +37,9 @@ class Host < ActiveRecord::Base
           .select(:status)
           .group(:status)
           .count
+  end
+
+  def calculate_layers_count
+    layers.count
   end
 end
