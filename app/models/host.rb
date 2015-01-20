@@ -7,16 +7,26 @@ class Host < ActiveRecord::Base
            to: :institution,
            prefix: true
 
-  def status
-    Layer.where(host_id: id).ids
-    Status.where(layer_id: layers)
-                   .where(latest: true)
-                   .select(:status)
-                   .group(:status)
-                   .count
+  def overall_status(options = {})
+    if options[:force_update]
+      Rails.cache.write("host/#{id}/overall_status", calculate_overall_status)
+    end
+    Rails.cache.fetch("host/#{id}/overall_status", expires_in: 24.hours) do
+      calculate_overall_status
+    end
   end
 
   def last_ping_status
     pings.recent_status
+  end
+
+  private
+
+  def calculate_overall_status
+    Status.where(layer_id: layers)
+          .where(latest: true)
+          .select(:status)
+          .group(:status)
+          .count
   end
 end

@@ -76,6 +76,8 @@ class Status < ActiveRecord::Base
                          .where('id != ?', current.id)
                          .where(latest: true)
 
+    current.update_cache(old_statuses.last)
+
     if old_statuses.length > 0
       old_statuses.each do |old|
         old.latest = false
@@ -90,5 +92,27 @@ class Status < ActiveRecord::Base
 
   def self.latest
     where(latest: true)
+  end
+
+  def host
+    layer.host
+  end
+
+  # private
+
+  ##
+  # Checks to see if the current status is different the previous
+  # status.
+  # @param [Status]
+  def new_status_different?(previous)
+    return true unless previous.present?
+    status == previous.status
+  end
+
+  ##
+  # Update cache if current status is different from previous status
+  # @param [Status]
+  def update_cache(previous)
+    host.overall_status force_update: true if new_status_different?(previous)
   end
 end
