@@ -7,12 +7,18 @@
 #
 set :output, {:error => 'log/error.log', :standard => 'log/cron.log'}
 #
-every '15 * * * *' do
-  rake 'layers:check_stanford'
-end
 
-every '45 16 */2 * *' do
-  rake 'layers:check_all'
+# Only set cron jobs in production
+case @environment
+
+when 'production'
+  every '15 * * * *' do
+    rake 'layers:check_stanford'
+  end
+
+  every '45 16 */2 * *' do
+    rake 'layers:check_all'
+  end
 end
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
