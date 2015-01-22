@@ -20,12 +20,21 @@ class Layer < ActiveRecord::Base
     { ok: ok_count.to_f, count: last_seven.count.to_f }
   end
 
+  ##
+  # Returns a Layer's Geomonitor status score
   def recent_status_score
     recent_status[:ok] / recent_status[:count]
   end
 
+  ## Returns a Layer's Solr status score
   def recent_status_solr_score
-    Geomonitor.document_solr_score(id)
+    Geomonitor.document_solr_score(name)
+  end
+
+  ##
+  # Update the layer's Solr status score
+  def update_solr_score
+    Geomonitor.update id: name, score: recent_status_score
   end
 
   def self.current_recent_status(params)

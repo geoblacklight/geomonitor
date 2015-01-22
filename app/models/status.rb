@@ -64,6 +64,7 @@ class Status < ActiveRecord::Base
 
     puts "Status: #{status} #{res_code} in #{elapsed_time} seconds"
 
+    old_score = layer.recent_status_score
     current = Status.create(res_code: res_code,
                             latest: true,
                             res_time: elapsed_time,
@@ -77,6 +78,13 @@ class Status < ActiveRecord::Base
                          .where(latest: true)
 
     current.update_cache(old_statuses.last)
+    new_score = layer.recent_status_score
+
+    if old_score != new_score
+      if layer.recent_status_solr_score != new_score
+        layer.update_solr_score
+      end
+    end
 
     if old_statuses.length > 0
       old_statuses.each do |old|

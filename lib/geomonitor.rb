@@ -5,4 +5,7 @@ module Geomonitor
 
   extend Geomonitor::Indexer
 
+  def self.logger
+    ::Rails.logger
+  end
 end

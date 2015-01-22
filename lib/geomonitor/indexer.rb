@@ -29,10 +29,15 @@ module Geomonitor
     end
 
     def update(params)
-      puts params.inspect
-      puts params[:id]
-      params[:uuid] = find_document(params[:id])['uuid']
-      Geomonitor::SolrConfiguration.solr.add(uuid: params[:uuid], score: params[:score])
+      uuid = find_document(params[:id])['uuid']
+      data = [{ uuid: uuid, layer_availability_score_f: { set: params[:score] } }]
+      Geomonitor::SolrConfiguration.solr.update params: { commitWithin: 500, overwrite: true },
+                                                data: data.to_json, 
+                                                headers: { 'Content-Type' => 'application/json' }
+    end
+
+    def commit
+      Geomonitor::SolrConfiguration.solr.commit
     end
   end
 end
