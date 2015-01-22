@@ -27,9 +27,9 @@ ActiveRecord::Schema.define(version: 20150106002846) do
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "hosts", force: :cascade do |t|
-    t.string   "name",           limit: 255
+    t.string   "name"
     t.text     "description"
-    t.string   "url",            limit: 255
+    t.string   "url"
     t.integer  "institution_id"
     t.integer  "layers_count"
     t.integer  "pings_count"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20150106002846) do
   add_index "hosts", ["url"], name: "index_hosts_on_url", unique: true
 
   create_table "institutions", force: :cascade do |t|
-    t.string   "name",       limit: 255
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -49,11 +49,11 @@ ActiveRecord::Schema.define(version: 20150106002846) do
   add_index "institutions", ["name"], name: "index_institutions_on_name", unique: true
 
   create_table "layers", force: :cascade do |t|
-    t.string   "name",                limit: 255
-    t.string   "geoserver_layername", limit: 255
-    t.string   "access",              limit: 255
+    t.string   "name"
+    t.string   "geoserver_layername"
+    t.string   "access"
     t.text     "description"
-    t.string   "bbox",                limit: 255
+    t.string   "bbox"
     t.integer  "host_id"
     t.integer  "statuses_count"
     t.datetime "created_at"
@@ -74,10 +74,10 @@ ActiveRecord::Schema.define(version: 20150106002846) do
   add_index "pings", ["host_id"], name: "index_pings_on_host_id"
 
   create_table "statuses", force: :cascade do |t|
-    t.string   "res_code",        limit: 255
-    t.string   "res_message",     limit: 255
+    t.string   "res_code"
+    t.string   "res_message"
     t.decimal  "res_time"
-    t.string   "status",          limit: 255
+    t.string   "status"
     t.text     "status_message"
     t.text     "submitted_query"
     t.boolean  "latest"

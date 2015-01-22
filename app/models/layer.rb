@@ -2,6 +2,7 @@ class Layer < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
   belongs_to :host, counter_cache: true
+  validates :host_id, presence: true
   has_many :statuses
   has_one :latest_status,
     -> (object) { where("latest = ?", true) }, :class_name => 'Status'
@@ -17,6 +18,14 @@ class Layer < ActiveRecord::Base
     last_seven = Status.where(layer_id: id).last(7)
     ok_count = last_seven.count { |stat| stat.status == 'OK' }
     { ok: ok_count.to_f, count: last_seven.count.to_f }
+  end
+
+  def recent_status_score
+    recent_status[:ok] / recent_status[:count]
+  end
+
+  def recent_status_solr_score
+    Geomonitor.document_solr_score(id)
   end
 
   def self.current_recent_status(params)

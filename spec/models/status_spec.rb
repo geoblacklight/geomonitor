@@ -9,7 +9,7 @@ describe Status do
     @host = FactoryGirl.create(
       :host,
       institution_id: @institution.id,
-      name: 'Stanford 1',
+      name: 'Stanford',
       url: 'http://geowebservices-restricted.stanford.edu/geoserver'
     )
     @layer = FactoryGirl.create(

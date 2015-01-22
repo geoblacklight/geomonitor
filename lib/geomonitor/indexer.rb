@@ -20,11 +20,19 @@ module Geomonitor
     end
 
     def document_solr_score(id)
-      find_document(id)['layer_availability_score_f']
+      doc = find_document(id)
+      return doc['layer_availability_score_f'] unless doc.nil?
     end
 
     def query_solr(search_params = params || {})
       Geomonitor::SolrConfiguration.solr.get 'select', search_params
+    end
+
+    def update(params)
+      puts params.inspect
+      puts params[:id]
+      params[:uuid] = find_document(params[:id])['uuid']
+      Geomonitor::SolrConfiguration.solr.add(uuid: params[:uuid], score: params[:score])
     end
   end
 end

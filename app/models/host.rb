@@ -2,6 +2,8 @@ class Host < ActiveRecord::Base
   belongs_to :institution
   has_many :layers
   has_many :pings
+  validates :institution_id, presence: true
+  before_create :check_and_increment
 
   delegate :name,
            to: :institution,
@@ -30,6 +32,22 @@ class Host < ActiveRecord::Base
   end
 
   private
+
+  ##
+  # Checks for a host name presence and if it is there increment it by 1
+  def check_and_increment
+    similar_hosts = get_all_with_same_name name
+    if similar_hosts.count < 1
+      self.name = "#{self.name} 1"
+    else
+      next_num = similar_hosts.max_by{|m| m.name.scan(/\d+/)}.name.scan(/\d+/).first.nil? ? 1 : similar_hosts.max_by{|m| m.name.scan(/\d+/)}.name.scan(/\d+/).first.to_i + 1
+      self.name = "#{self.name} #{next_num}"
+    end
+  end
+
+  def get_all_with_same_name(name)
+    Host.where("name LIKE ?", "#{name}%")
+  end
 
   def calculate_overall_status
     Status.where(layer_id: layers)
