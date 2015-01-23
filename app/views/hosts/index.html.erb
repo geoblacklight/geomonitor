@@ -17,7 +17,7 @@
     <td><%= link_to host.institution_name, host.institution  %></td>
     <td><%= number_with_delimiter(host.layers_count) %></td>
     <td><%= format_status_num(host.overall_status) %></td>
-    <td><%= format_status_percent(host.overall_status, host.layers.count) %></td>
+    <td><%= format_status_percent(host.overall_status, host.layers_count) %></td>
   </tr>
 <% end %>
   <tfoot>

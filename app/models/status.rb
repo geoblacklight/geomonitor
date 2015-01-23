@@ -107,7 +107,14 @@ class Status < ActiveRecord::Base
     layer.host
   end
 
-  # private
+  ##
+  # Update cache if current status is different from previous status
+  # @param [Status]
+  def update_cache(previous)
+    host.overall_status force_update: true if new_status_different?(previous)
+  end
+
+  private
 
   ##
   # Checks to see if the current status is different the previous
@@ -115,13 +122,6 @@ class Status < ActiveRecord::Base
   # @param [Status]
   def new_status_different?(previous)
     return true unless previous.present?
-    status == previous.status
-  end
-
-  ##
-  # Update cache if current status is different from previous status
-  # @param [Status]
-  def update_cache(previous)
-    host.overall_status force_update: true if new_status_different?(previous)
+    status != previous.status
   end
 end
