@@ -20,7 +20,8 @@ namespace :solr do
               host_id: host.id,
               geoserver_layername: doc['layer_id_s'],
               access: doc['dc_rights_s'],
-              bbox: doc['solr_bbox']
+              bbox: doc['solr_bbox'],
+              active: true
             )
           end
         end
@@ -31,5 +32,28 @@ namespace :solr do
   task update_and_ping: :environment do
     Rake::Task['solr:update_layers'].invoke
     Rake::Task['ping:hosts'].invoke
+  end
+  desc 'Deactivate non-Solr layers'
+  task deactivate: :environment do
+    solr_current = Geomonitor.get_all_document_ids
+    if solr_current.count > 0
+      Layer.where.not(name: solr_current).each do |layer|
+        layer.active = false
+        layer.save
+        Rails.cache.delete("host/#{layer.host_id}/layers_count")
+      end
+    end
+  end
+  desc 'Activate Solr layers'
+  task activate: :environment do
+    solr_current = Geomonitor.get_all_document_ids
+    solr_current.each do |solr_name|
+      layer = Layer.find_by_name(solr_name)
+      if layer
+        layer.active = true
+        layer.save
+        Rails.cache.delete("host/#{layer.host_id}/layers_count")
+      end
+    end
   end
 end

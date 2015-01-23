@@ -24,11 +24,15 @@ class Host < ActiveRecord::Base
 
   def layers_count(options = {})
     if options[:force_update]
-      Rails.cache.write("host/#{id}/overall_status", calculate_layers_count)
+      Rails.cache.write("host/#{id}/layers_count", calculate_layers_count)
     end
     Rails.cache.fetch("host/#{id}/layers_count", expires_in: 24.hours) do
       calculate_layers_count
     end
+  end
+
+  def active_layers
+    layers.where(active: true)
   end
 
   private
@@ -50,7 +54,7 @@ class Host < ActiveRecord::Base
   end
 
   def calculate_overall_status
-    Status.where(layer_id: layers)
+    Status.where(layer_id: active_layers)
           .where(latest: true)
           .select(:status)
           .group(:status)
@@ -58,6 +62,6 @@ class Host < ActiveRecord::Base
   end
 
   def calculate_layers_count
-    layers.count
+    active_layers.count
   end
 end

@@ -1,12 +1,10 @@
 # Rake tasks to check layers
   namespace :layers do
-    desc 'Check status of layers that have no status'
+    desc 'Check status of active layers that have no status'
     task :check_empties => :environment do
-      status_count = Status.all().count
-      layer_count = Layer.all().count
 
       # Get layers that have not been status checked
-      layers = Layer.where('id NOT IN (SELECT DISTINCT(layer_id) FROM statuses)')
+      layers = Layer.where(active: true).where('id NOT IN (SELECT DISTINCT(layer_id) FROM statuses)')
 
       layers.shuffle.each do |layer|
 
@@ -19,9 +17,9 @@
         Status.run_check(layer)
       end
     end
-    desc 'Check everything'
+    desc 'Check active layers'
     task :check_all => :environment do
-      layers = Layer.all()
+      layers = Layer.where(active: true)
       layers.shuffle.each do |layer|
 
         # Skip if host is not pingable
@@ -34,7 +32,7 @@
         Status.run_check(layer)
       end
     end
-    desc 'Check Stanfords layers'
+    desc 'Check Stanfords active layers'
     task :check_stanford => :environment do
       institution = Institution.find_by name: "Stanford"
       stanford_hosts = Host.where(institution_id: institution.id)

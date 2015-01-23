@@ -38,7 +38,7 @@ class Layer < ActiveRecord::Base
   end
 
   def self.current_recent_status(params)
-    where(host_id: params[:id])
+    where(host_id: params[:id], active: true)
          .with_current_status(params[:status])
          .includes(:latest_status)
          .order(updated_at: :desc)

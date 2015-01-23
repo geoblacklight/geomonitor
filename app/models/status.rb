@@ -103,6 +103,10 @@ class Status < ActiveRecord::Base
     where(latest: true)
   end
 
+  def self.active
+    joins(:layer).where(layers: { active: true })
+  end
+
   def host
     layer.host
   end
