@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Institution do
-  context 'creates an institution' do
+  describe 'creates an institution' do
     before(:each) do
       @institution = FactoryGirl.create(
         :institution,
@@ -10,7 +10,7 @@ describe Institution do
     end
 
     it 'with correct name' do
-      @institution.name.should eq('Stanford University')
+      expect(@institution.name).to eq('Stanford University')
     end
   end
 end

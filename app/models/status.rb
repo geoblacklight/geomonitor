@@ -7,7 +7,7 @@ class Status < ActiveRecord::Base
 
   def self.run_check(layer)
     Geomonitor::Tools.verbose_sleep(rand(1..5))
-    puts "Checking #{layer.name}"
+    Geomonitor.logger.info "Checking layer #{layer.name}"
     options = {
       'SERVICE' => 'WMS',
       'VERSION' => '1.1.1',
@@ -62,7 +62,7 @@ class Status < ActiveRecord::Base
       end
     end
 
-    puts "Status: #{status} #{res_code} in #{elapsed_time} seconds"
+    Geomonitor.logger.info "Status: #{status} #{res_code} in #{elapsed_time} seconds"
 
     old_score = layer.recent_status_score
     current = Status.create(res_code: res_code,
@@ -82,6 +82,7 @@ class Status < ActiveRecord::Base
 
     if old_score != new_score
       if layer.recent_status_solr_score != new_score
+        Geomonitor.logger.info "Score in Solr is different, updating Solr"
         layer.update_solr_score
       end
     end

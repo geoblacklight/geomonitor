@@ -31,49 +31,51 @@ describe Status do
       latest: true
     )
   end
-  context 'creates a status' do
+  describe 'creates a status' do
     it 'with status' do
-      @status.status.should eq('OK')
+      expect(@status.status).to eq('OK')
     end
     it 'with latest' do
-      @status.latest.should eq(true)
+      expect(@status.latest).to eq(true)
     end
     it 'with host name' do
-      @status.layer.host.name.should eq('Stanford 1')
+      expect(@status.layer.host.name).to eq('Stanford 1')
     end
     it 'with res_code' do
-      @status.res_code.should eq('200')
+      expect(@status.res_code).to eq('200')
     end
     it 'with latest' do
-      @status.res_message.should eq(nil)
+      expect(@status.res_message).to eq(nil)
     end
-    pending 'with res_time' do
-      @status.res_time.to eq(0.123)
+    it 'with res_time' do
+      pending('fixing ruby time')
+      expect(@status.res_time).to eq(0.123)
     end
     it 'with status_message' do
-      @status.status_message.should eq('image/png')
+      expect(@status.status_message).to eq('image/png')
     end
     it 'with submitted query' do
-      @status.submitted_query.should include('S&VERSION=1.1.1&REQUEST=GetMap')
+      expect(@status.submitted_query).to include('S&VERSION=1.1.1&REQUEST=GetMap')
     end
     it 'should have one Status' do
-      Status.all.count.should eq(1)
+      expect(Status.all.count).to eq(1)
     end
   end
-  context 'checks layer status' do
+  describe 'checks layer status' do
     before(:each) do
+      expect_any_instance_of(RestClient::Resource).to receive(:get).and_return(OpenStruct.new(headers: {content_type: 'image/png'}))
       Status.run_check(@layer)
     end
     # Run a status check on a layer
 
     it 'should create a new status' do
-      Status.all.count.should eq(2)
+      expect(Status.all.count).to eq(2)
     end
     it 'first should be not latest' do
-      Status.first.latest.should eq(false)
+      expect(Status.first.latest).to eq(false)
     end
     it 'last should be latest' do
-      Status.last.latest.should eq(true)
+      expect(Status.last.latest).to eq(true)
     end
   end
 

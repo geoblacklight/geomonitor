@@ -34,7 +34,7 @@ class Layer < ActiveRecord::Base
   ##
   # Update the layer's Solr status score
   def update_solr_score
-    Geomonitor.update id: name, score: recent_status_score
+    Geomonitor.update_by_id id: name, score: recent_status_score
   end
 
   def self.current_recent_status(params)

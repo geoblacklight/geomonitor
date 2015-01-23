@@ -1,6 +1,6 @@
 module Geomonitor
   module Indexer
-    
+
     def get_all_document_ids
       begin
         query = query_solr params: {
@@ -8,7 +8,7 @@ module Geomonitor
           fl: 'layer_slug_s',
           rows: 100000
         }
-        query['response']['docs'].map { |doc| doc['layer_slug_s'] }
+        query.try(:[], 'response').try(:[], 'docs').map { |doc| doc.try(:[], 'layer_slug_s') }
       end
     end
 
@@ -28,16 +28,16 @@ module Geomonitor
       Geomonitor::SolrConfiguration.solr.get 'select', search_params
     end
 
-    def update(params)
+    def update_by_id(params)
       uuid = find_document(params[:id])['uuid']
       data = [{ uuid: uuid, layer_availability_score_f: { set: params[:score] } }]
+      update(data)
+    end
+
+    def update(data)
       Geomonitor::SolrConfiguration.solr.update params: { commitWithin: 500, overwrite: true },
                                                 data: data.to_json, 
                                                 headers: { 'Content-Type' => 'application/json' }
-    end
-
-    def commit
-      Geomonitor::SolrConfiguration.solr.commit
     end
   end
 end

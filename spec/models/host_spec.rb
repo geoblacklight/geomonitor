@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Host do
-  context 'creates a host' do
+  describe 'creates a host' do
     before(:each) do
       @institution = FactoryGirl.create(
         :institution,
@@ -16,10 +16,10 @@ describe Host do
     end
 
     it 'with name' do
-      @host.name.should eq('Stanford 1')
+      expect(@host.name).to eq('Stanford 1')
     end
     it 'with institution name' do
-      @host.institution.name.should eq('Stanford University')
+      expect(@host.institution.name).to eq('Stanford University')
     end
   end
 end
