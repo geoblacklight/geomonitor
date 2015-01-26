@@ -1,3 +1,6 @@
+<div class='alert alert-info'>
+  This page only shows actively monitored layers.
+</div>
 <table class="table table-hover table-responsive">
   <thead>
     <tr>
@@ -17,25 +20,25 @@
     <td><%= link_to host.institution_name, host.institution  %></td>
     <td><%= number_with_delimiter(host.layers_count) %></td>
     <td><%= format_status_num(host.overall_status) %></td>
-    <td><%= format_status_percent(host.overall_status, host.layers.count) %></td>
+    <td><%= format_status_percent(host.overall_status, host.layers_count) %></td>
   </tr>
 <% end %>
   <tfoot>
     <td></td>
     <td></td>
     <td></td>
-    <td><%= number_with_delimiter(Layer.all.count) %></td>
-    <td><%= number_with_delimiter(Status.latest.distinct(:layer_id).count) %></td>
-    <td><%= number_to_percentage((Status.latest.distinct(:layer_id).count.to_f/Layer.all.count.to_f)*100, precision: 1) %></td>
+    <td><%= number_with_delimiter(Layer.where(active: true).count) %></td>
+    <td><%= number_with_delimiter(Status.latest.active.distinct(:layer_id).count) %></td>
+    <td><%= number_to_percentage((Status.latest.active.distinct(:layer_id).count.to_f/Layer.all.count.to_f)*100, precision: 1) %></td>
 </table>
 
 <table class="table table-responsive lead">
   <tr>
-    <th>Total checked:</th>
-    <td><%= format_status_num(Status.latest.status_groups.count) %></td>
+    <th>Current checked:</th>
+    <td><%= format_status_num(Status.latest.active.status_groups.count) %></td>
   </tr>
   <tr>
     <th>Availability:</th>
-    <td><%= format_status_percent(Status.latest.status_groups.count, Status.latest.count) %></td>
+    <td><%= format_status_percent(Status.latest.active.status_groups.count, Status.latest.count) %></td>
   </tr>
 </table>

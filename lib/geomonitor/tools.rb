@@ -3,7 +3,7 @@ module Geomonitor::Tools
   DEGREES_IN_CIRCLE = 360.0
 
   def self.verbose_sleep(time)
-    puts "Waiting for #{time} seconds"
+    Geomonitor.logger.info "Waiting for #{time} seconds"
     sleep(time)
   end
   def self.json_as_utf(json_string)

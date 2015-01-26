@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Layer do
-  context 'creates a layer' do
+  describe 'creates a layer' do
     before(:each) do
       @institution = FactoryGirl.create(
         :institution,
@@ -10,7 +10,7 @@ describe Layer do
       @host = FactoryGirl.create(
         :host,
         institution_id: @institution.id,
-        name: 'Stanford 1',
+        name: 'Stanford',
         url: 'http://geowebservices-restricted.stanford.edu/geoserver'
       )
       @layer = FactoryGirl.create(
@@ -23,19 +23,19 @@ describe Layer do
       )
     end
     it 'with host name' do
-      @layer.host.name.should eq('Stanford 1')
+      expect(@layer.host.name).to eq('Stanford 1')
     end
     it 'with name' do
-      @layer.name.should eq('stanford-zv882px4750')
+      expect(@layer.name).to eq('stanford-zv882px4750')
     end
     it 'with geoserver name' do
-      @layer.geoserver_layername.should eq('druid:zv882px4750')
+      expect(@layer.geoserver_layername).to eq('druid:zv882px4750')
     end
     it 'with access' do
-      @layer.access.should eq('Restricted')
+      expect(@layer.access).to eq('Restricted')
     end
     it 'with bbox' do
-      @layer.bbox.should eq('73.258324 29.52631 78.859703 32.90303')
+      expect(@layer.bbox).to eq('73.258324 29.52631 78.859703 32.90303')
     end
     describe 'current_status' do
       it 'returns the last status' do

@@ -7,7 +7,7 @@ class Status < ActiveRecord::Base
 
   def self.run_check(layer)
     Geomonitor::Tools.verbose_sleep(rand(1..5))
-    puts "Checking #{layer.name}"
+    Geomonitor.logger.info "Checking layer #{layer.name}"
     options = {
       'SERVICE' => 'WMS',
       'VERSION' => '1.1.1',
@@ -62,8 +62,9 @@ class Status < ActiveRecord::Base
       end
     end
 
-    puts "Status: #{status} #{res_code} in #{elapsed_time} seconds"
+    Geomonitor.logger.info "Status: #{status} #{res_code} in #{elapsed_time} seconds"
 
+    old_score = layer.recent_status_score
     current = Status.create(res_code: res_code,
                             latest: true,
                             res_time: elapsed_time,
@@ -77,6 +78,14 @@ class Status < ActiveRecord::Base
                          .where(latest: true)
 
     current.update_cache(old_statuses.last)
+    new_score = layer.recent_status_score
+
+    if old_score != new_score
+      if layer.recent_status_solr_score != new_score
+        Geomonitor.logger.info "Score in Solr is different, updating Solr"
+        layer.update_solr_score
+      end
+    end
 
     if old_statuses.length > 0
       old_statuses.each do |old|
@@ -94,19 +103,12 @@ class Status < ActiveRecord::Base
     where(latest: true)
   end
 
-  def host
-    layer.host
+  def self.active
+    joins(:layer).where(layers: { active: true })
   end
 
-  # private
-
-  ##
-  # Checks to see if the current status is different the previous
-  # status.
-  # @param [Status]
-  def new_status_different?(previous)
-    return true unless previous.present?
-    status == previous.status
+  def host
+    layer.host
   end
 
   ##
@@ -114,5 +116,16 @@ class Status < ActiveRecord::Base
   # @param [Status]
   def update_cache(previous)
     host.overall_status force_update: true if new_status_different?(previous)
+  end
+
+  private
+
+  ##
+  # Checks to see if the current status is different the previous
+  # status.
+  # @param [Status]
+  def new_status_different?(previous)
+    return true unless previous.present?
+    status != previous.status
   end
 end

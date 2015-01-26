@@ -9,7 +9,7 @@ describe Ping do
     @host = FactoryGirl.create(
       :host,
       institution_id: @institution.id,
-      name: 'Stanford 1',
+      name: 'Stanford',
       url: 'http://geowebservices-restricted.stanford.edu/geoserver'
     )
     @ping = FactoryGirl.create(
@@ -19,32 +19,32 @@ describe Ping do
       latest: true
     )
   end
-  context 'creates a ping' do
+  describe 'creates a ping' do
     it 'with status' do
-      @ping.status.should eq(true)
+      expect(@ping.status).to eq(true)
     end
     it 'with latest' do
-      @ping.latest.should eq(true)
+      expect(@ping.latest).to eq(true)
     end
     it 'with host name' do
-      @ping.host.name.should eq('Stanford 1')
+      expect(@ping.host.name).to eq('Stanford 1')
     end
     it 'should have one Ping' do
-      Ping.all().count.should eq(1)
+      expect(Ping.all().count).to eq(1)
     end
   end
-  context 'checks host ping' do
+  describe 'checks host ping' do
     before(:each) do
       Ping.check_status(@host)
     end
     it 'should create a new ping' do
-      Ping.all().count.should eq(2)
+      expect(Ping.all().count).to eq(2)
     end
     it 'first should be not latest' do
-      Ping.first.latest.should eq(false)
+      expect(Ping.first.latest).to eq(false)
     end
     it 'last should be latest' do
-      Ping.last.latest.should eq(true)
+      expect(Ping.last.latest).to eq(true)
     end
   end
 end

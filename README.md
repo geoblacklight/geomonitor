@@ -60,7 +60,7 @@ $ rake ping:hosts
 ### Run tests
 
 ```
-$ rspec
+$ rake ci
 ```
 
 ### Run checks on layers
