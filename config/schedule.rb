@@ -19,6 +19,10 @@ when 'production'
   every '45 16 */2 * *' do
     rake 'layers:check_all'
   end
+
+  every '45 */6 * * *' do
+    rake 'solr:update_and_ping'
+  end
 end
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
