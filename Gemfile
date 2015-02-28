@@ -73,6 +73,10 @@ group :deployment do
   gem 'lyberteam-capistrano-devel', '3.1.0'
 end
 
+gem 'rails_config'
+gem 'squash_ruby', require: 'squash/ruby'
+gem 'squash_rails', require: 'squash/rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
