@@ -90,7 +90,7 @@ Documented support RESTful paths support json requests.
 
 #### /hosts
 HTTP Verb | Path | Description
----- | ----
+---- | ---- | ----
 GET | /hosts/:id | Get a list of Layers on a given Host [:id]
 
 Supported parameters:
