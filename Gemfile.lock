@@ -37,7 +37,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.0)
-    autoprefixer-rails (5.1.7)
+    autoprefixer-rails (5.1.7.1)
       execjs
       json
     bootstrap-sass (3.3.4)
@@ -244,7 +244,7 @@ PLATFORMS
 
 DEPENDENCIES
   autoprefixer-rails
-  bootstrap-sass (~> 3.3.1)
+  bootstrap-sass (~> 3.3.4)
   bullet (~> 4.14.0)
   capistrano (~> 3.2.1)
   capistrano-bundler
