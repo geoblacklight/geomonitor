@@ -9,21 +9,19 @@ set :output, {:error => 'log/error.log', :standard => 'log/cron.log'}
 #
 
 # Only set cron jobs in production
-case @environment
 
-when 'production'
-  every '15 * * * *' do
-    rake 'layers:check_stanford'
-  end
-
-  every '45 16 */2 * *' do
-    rake 'layers:check_all'
-  end
-
-  every '45 */6 * * *' do
-    rake 'solr:update_and_ping'
-  end
+every '15 * * * *', :roles => [:whenever] do
+  rake 'layers:check_stanford'
 end
+
+every '45 16 */2 * *', :roles => [:whenever] do
+  rake 'layers:check_all'
+end
+
+every '45 */6 * * *', :roles => [:whenever] do
+  rake 'solr:update_and_ping'
+end
+
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
 #   runner "MyModel.some_method"
