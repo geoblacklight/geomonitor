@@ -1,5 +1,10 @@
 # Settings 
 
+# NewRelic Settings
+NEWRELIC_APP_NAME: 'should be specific to stage and prod'
+NEWRELIC_LICENSE_KEY: 'this is private'
+
+
 # Squash Settings
 SQUASH_API_HOST: 'http://squash-host.example.com'
 SQUASH_API_KEY: 'squash-api-key'
