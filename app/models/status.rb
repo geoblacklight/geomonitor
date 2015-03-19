@@ -80,11 +80,11 @@ class Status < ActiveRecord::Base
     current.update_cache(old_statuses.last)
     new_score = layer.recent_status_score
 
-    if old_score != new_score
-      if layer.recent_status_solr_score != new_score
-        Geomonitor.logger.info "Score in Solr is different, updating Solr"
-        layer.update_solr_score
-      end
+    layer_recent_status_solr_score = layer.recent_status_solr_score
+
+    if layer_recent_status_solr_score.blank? || layer_recent_status_solr_score != new_score
+      Geomonitor.logger.info "Score in Solr is different, updating Solr"
+      layer.update_solr_score
     end
 
     if old_statuses.length > 0
