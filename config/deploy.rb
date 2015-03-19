@@ -64,3 +64,5 @@ namespace :deploy do
 end
 
 before 'bundler:install', 'prepare_bundle_config'
+# before 'deploy:publishing', 'squash:write_revision'
+
