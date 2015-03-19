@@ -263,6 +263,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   database_cleaner
   factory_girl_rails
+  faraday
   friendly_id
   jbuilder (~> 1.2)
   jquery-rails
