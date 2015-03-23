@@ -44,6 +44,16 @@ describe Geomonitor::Client do
       expect(client.url).to eq 'http://www.example.com/geoserver/wms'
     end
   end
+  describe 'create_response' do
+    it 'kicks off and ends timers' do
+      expect(client.elapsed_time).to be_nil
+      client.create_response
+      expect(client.elapsed_time).to_not be_nil
+    end
+    it 'creates a Geomonitor::Response' do
+      expect(client.create_response).to be_an Geomonitor::Response
+    end
+  end
   describe 'grab_tile' do
     let(:response) { double('response') }
     let(:get) { double('get') }

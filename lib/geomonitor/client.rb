@@ -39,11 +39,24 @@ module Geomonitor
     end
 
     ##
+    # Starts a response, it's timer, and then creates a Geomonitor::Repsponse
+    # @return [Geomonitor::Response]
+    def create_response
+      @start_time = Time.now
+      begin
+        response = grab_tile
+      rescue Geomonitor::Exceptions::TileGrabFailed => error
+        response = error
+      end
+      @end_time = Time.now
+      Geomonitor::Response.new(response)
+    end
+
+    ##
     # Initiates tile request from a remote WMS server. Will catch
     # Faraday::Error::ConnectionFailed and Faraday::Error::TimeoutError
     # @return [Faraday::Request] returns a Faraday::Request object
     def grab_tile
-      @start_time = Time.now
       conn = Faraday.new(url: url)
       conn.get do |request|
         request.params = request_params
@@ -52,12 +65,9 @@ module Geomonitor
           open_timeout: timeout
         }
       end
-      @end_time = Time.now
     rescue Faraday::Error::ConnectionFailed
-      @end_time = Time.now
       raise Geomonitor::Exceptions::TileGrabFailed, message: 'Connection failed', url: conn.url_prefix.to_s
     rescue Faraday::Error::TimeoutError
-      @end_time = Time.now
       raise Geomonitor::Exceptions::TileGrabFailed, message: 'Connection timeout', url: conn.url_prefix.to_s
     end
 

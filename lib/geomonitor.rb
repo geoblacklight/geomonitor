@@ -2,6 +2,7 @@ module Geomonitor
   require 'geomonitor/client'
   require 'geomonitor/exceptions'
   require 'geomonitor/indexer'
+  require 'geomonitor/response'
   require 'geomonitor/solr_configuration'
   require 'geomonitor/tools'
 
