@@ -42,6 +42,8 @@ end
 
 namespace :deploy do
 
+  before 'bundler:install', 'prepare_bundle_config'
+
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
@@ -63,6 +65,5 @@ namespace :deploy do
 
 end
 
-before 'bundler:install', 'prepare_bundle_config'
 # before 'deploy:publishing', 'squash:write_revision'
 
