@@ -9,6 +9,7 @@ describe Geomonitor::Response do
     allow(response).to receive(:headers).and_return(content_type: 'image/png')
     allow(response).to receive(:status).and_return(200)
     allow(response).to receive(:body).and_return({})
+    allow(response).to receive(:env).and_return(url: 'http://www.example.com')
     allow(ab_response).to receive(:headers).and_return(content_type: 'application/xml')
     allow(ab_response).to receive(:status).and_return(200)
     allow(ab_response).to receive(:body).and_return(nil)
@@ -38,6 +39,7 @@ describe Geomonitor::Response do
       expect(normal_response.body).to eq 'image/png'
       expect(normal_response.response_code).to eq 200
       expect(normal_response.status).to eq 'OK'
+      expect(normal_response.request_url).to eq 'http://www.example.com'
     end
     it 'for something went wrong response' do
       expect(abnormal_response.body).to be_nil

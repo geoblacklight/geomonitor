@@ -1,6 +1,6 @@
 module Geomonitor
   class Response
-    attr_reader :status, :response_code, :body
+    attr_reader :status, :response_code, :body, :request_url
     def initialize(response = {})
       @response = response
       parse_response
@@ -20,7 +20,9 @@ module Geomonitor
         @status = 'FAIL'
         @response_code = '504'
         @body = 'Request Timeout'
+        @request_url = @response.request_url
       elsif @response.headers[:content_type] == 'image/png'
+        @request_url = @response.env[:url].to_s
         @status = 'OK'
         @response_code = @response.status
         @body = 'image/png'

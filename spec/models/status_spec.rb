@@ -62,8 +62,11 @@ describe Status do
     end
   end
   describe 'checks layer status' do
+    let(:doc) { OpenStruct.new(uuid: 'purl.stanford.edu/123456') }
     before(:each) do
-      expect_any_instance_of(RestClient::Resource).to receive(:get).and_return(OpenStruct.new(headers: {content_type: 'image/png'}))
+      expect_any_instance_of(Geomonitor::Indexer).to receive(:find_document).twice.and_return(doc)
+      expect_any_instance_of(Geomonitor::Indexer).to receive(:update)
+      expect_any_instance_of(Faraday::Connection).to receive(:get).and_return(OpenStruct.new(headers: {content_type: 'image/png'}, status: '200', env: {url: 'http://www.example.com'}))
       Status.run_check(@layer)
     end
     # Run a status check on a layer
