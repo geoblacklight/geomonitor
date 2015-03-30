@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-lock '3.2.1'
+lock '3.4.0'
 
 set :application, 'geomonitor'
 set :repo_url, 'https://github.com/geoblacklight/geomonitor.git'
@@ -37,10 +37,12 @@ set :linked_dirs, %w{bin data config/settings log tmp/pids tmp/cache tmp/sockets
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 task :prepare_bundle_config do
-  'bundle config build.pg --with-pg-config=/usr/pgsql-9.3/bin/pg_config'
+  'bundle config build.pg --with-pg-config=/usr/pgsql-9.2/bin/pg_config'
 end
 
 namespace :deploy do
+
+  before 'bundler:install', 'prepare_bundle_config'
 
   desc 'Restart application'
   task :restart do
@@ -63,6 +65,5 @@ namespace :deploy do
 
 end
 
-before 'bundler:install', 'prepare_bundle_config'
 # before 'deploy:publishing', 'squash:write_revision'
 
