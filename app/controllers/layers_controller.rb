@@ -8,7 +8,7 @@ class LayersController < ApplicationController
   def check_status
     @layer = Layer.find_by id: params[:id]
     @status = Status.run_check(@layer)
-    render json: Geomonitor::Tools.json_as_utf(@layer.statuses.last.to_json)
+    render json: @layer.statuses.last.to_json.force_encoding('UTF-8')
   end
 
   def show

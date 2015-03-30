@@ -6,9 +6,6 @@ module Geomonitor::Tools
     Geomonitor.logger.info "Waiting for #{time} seconds"
     sleep(time)
   end
-  def self.json_as_utf(json_string)
-    json_string.gsub!(/\\u([0-9a-z]{4})/) {|s| [$1.to_i(16)].pack("U")}
-  end
 
   # Formats a bounding box to a WMS parameter
   # bbox_string is a string as 'w s e n'
