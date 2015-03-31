@@ -26,9 +26,7 @@ module ApplicationHelper
 
   def format_status_num(status)
     html = ""
-    puts status
     sorted_status = status.sort_by { |val| val[1].to_i }
-    puts sorted_status
     sorted_status.reverse.each do |s|
       html += status_class(s[0], number_with_delimiter(s[1]))
       html += " "
@@ -38,9 +36,7 @@ module ApplicationHelper
 
   def format_status_percent(status, total)
     html = ""
-    puts status
     sorted_status = status.sort_by { |val| val[1].to_i }
-    puts sorted_status
     sorted_status.reverse.each do |s|
       html += status_class(s[0], number_to_percentage((s[1].to_f/total.to_f*100), precision: 1))
       html += " "
@@ -67,7 +63,6 @@ module ApplicationHelper
   end
 
   def latest_status_badge(status)
-    puts status
     image_tag "http://img.shields.io/badge/Latest-#{replace_question(status.status)}-#{status_to_color(status.status)}.svg"
   end
 
