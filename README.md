@@ -84,6 +84,13 @@ every '15 * * * *' do
 end
 ```
 
+### Cleanup database by deleting old statuses
+This task removes all but the last 200 statuses for each layer and saves them to a csv in `data`
+
+```sh
+$ rake cleanup:status
+```
+
 ## REST API
 
 Documented support RESTful paths support json requests.
