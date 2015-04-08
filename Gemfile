@@ -79,6 +79,8 @@ gem 'squash_ruby', require: 'squash/ruby'
 gem 'squash_rails', require: 'squash/rails'
 
 gem 'newrelic_rpm'
+
+gem 'pg_csv'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
