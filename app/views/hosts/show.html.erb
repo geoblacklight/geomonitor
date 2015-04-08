@@ -22,7 +22,7 @@
     <td>
       <%= link_to content_tag(:span, '', class: 'glyphicon glyphicon-wrench'), {controller: 'layers', action: 'check_status', id: layer.id}, data: { no_turbolink: true }, target: '_blank', title: 'Check Status' %>
        |
-      <%= link_to content_tag(:span, '', class: 'glyphicon glyphicon-globe'), "http://ogpapp-test.stanford.edu/catalog/#{layer.name}", target: '_blank', title: 'View in GeoBlacklight' %>
+      <%= link_to content_tag(:span, '', class: 'glyphicon glyphicon-globe'), "#{Settings.GEOBLACKLIGHT_URL}/catalog/#{layer.name}", target: '_blank', title: 'View in GeoBlacklight' %>
     </td>
     <td><%= link_to layer.name, layer %></td>
     <td><%= layer.geoserver_layername %></td>
