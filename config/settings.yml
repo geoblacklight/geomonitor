@@ -1,5 +1,7 @@
 # Settings 
 
+GEOBLACKLIGHT_URL: 'https://earthworks.stanford.edu'
+
 # NewRelic Settings
 NEWRELIC_APP_NAME: 'should be specific to stage and prod'
 NEWRELIC_LICENSE_KEY: 'this is private'
