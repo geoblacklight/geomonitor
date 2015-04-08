@@ -22,6 +22,10 @@ every '45 */6 * * *', :roles => [:whenever] do
   rake 'solr:update_and_ping'
 end
 
+every '0 1 * * 6', :roles => [:web] do
+  rake 'clean:status'
+end
+
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
 #   runner "MyModel.some_method"
