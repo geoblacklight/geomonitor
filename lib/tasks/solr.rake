@@ -15,14 +15,20 @@ namespace :solr do
             host = Host.find_or_create_by(url: wms, institution_id: institution.id) do |host|
               host.name = "#{institution.name}"
             end
-            Layer.create(
-              name: name_id,
-              host_id: host.id,
-              geoserver_layername: doc['layer_id_s'],
-              access: doc['dc_rights_s'],
-              bbox: doc['solr_bbox'],
-              active: true
-            )
+            begin
+              puts doc['georss_box_s']
+              georss_bbox = doc['georss_box_s'].split(' ')
+              Layer.create(
+                name: name_id,
+                host_id: host.id,
+                geoserver_layername: doc['layer_id_s'],
+                access: doc['dc_rights_s'],
+                bbox: "#{georss_bbox[1]} #{georss_bbox[0]} #{georss_bbox[3]} #{georss_bbox[2]}",
+                active: true
+              )
+            rescue NoMethodError => e
+              Rails.logger.error "#{e} for #{name_id}"
+            end
           end
         end
       end
