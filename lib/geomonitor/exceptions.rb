@@ -12,5 +12,7 @@ module Geomonitor
         @options[:url].to_s
       end
     end
+    class NoDocumentFound < StandardError
+    end
   end
 end

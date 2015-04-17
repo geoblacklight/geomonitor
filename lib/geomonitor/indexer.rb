@@ -29,9 +29,19 @@ module Geomonitor
     end
 
     def update_by_id(params)
-      uuid = find_document(params[:id])['uuid']
+      uuid = uuid_from_id(params[:id])
       data = [{ uuid: uuid, layer_availability_score_f: { set: params[:score] } }]
       update(data)
+    end
+
+    ##
+    # Query for a Solr document and return it's uuid
+    # @param [String] id a layer_slug_s id field
+    # @return [String]
+    def uuid_from_id(id)
+      find_document(id)['uuid']
+    rescue NoMethodError
+      raise Geomonitor::Exceptions::NoDocumentFound.new, "Could not find: #{id}"
     end
 
     def update(data)

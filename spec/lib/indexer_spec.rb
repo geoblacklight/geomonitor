@@ -49,11 +49,17 @@ describe Geomonitor::Indexer do
   describe 'update_by_id' do
     describe 'create data to be updated in Solr' do
       it 'should find uuid from document' do
-        doc = OpenStruct.new(uuid: 'purl.stanford.edu/123456')
-        expect_any_instance_of(Geomonitor::Indexer).to receive(:find_document).with('stanford-123456').and_return(doc)
+        expect_any_instance_of(Geomonitor::Indexer).to receive(:uuid_from_id).with('stanford-123456').and_return('purl.stanford.edu/123456')
         expect_any_instance_of(Geomonitor::Indexer).to receive(:update).with([{uuid: 'purl.stanford.edu/123456', layer_availability_score_f: { set: 0.7 } }])
         expect(Geomonitor.update_by_id({id: 'stanford-123456', score: 0.7})).to be_nil
       end
+    end
+  end
+  describe '#uuid_from_id' do
+    it 'should return the uuid field from a document' do
+      doc = OpenStruct.new(uuid: 'purl.stanford.edu/123456')
+      expect_any_instance_of(Geomonitor::Indexer).to receive(:find_document).and_return(doc)
+      expect(Geomonitor.uuid_from_id('stanford-123456')).to eq 'purl.stanford.edu/123456'
     end
   end
 end
