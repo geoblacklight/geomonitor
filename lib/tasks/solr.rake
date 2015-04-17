@@ -16,7 +16,6 @@ namespace :solr do
               host.name = "#{institution.name}"
             end
             begin
-              puts doc['georss_box_s']
               georss_bbox = doc['georss_box_s'].split(' ')
               Layer.create(
                 name: name_id,
@@ -59,6 +58,17 @@ namespace :solr do
         layer.active = true
         layer.save
         Rails.cache.delete("host/#{layer.host_id}/layers_count")
+      end
+    end
+  end
+  desc 'Update solr with scores from active layers'
+  task update_solr: :environment do
+    Layer.where(active: true).each do |layer|
+      begin
+        Rails.logger.info layer.name
+        layer.update_solr_score
+      rescue Geomonitor::Exceptions::NoDocumentFound => e
+        Rails.logger.error e
       end
     end
   end
