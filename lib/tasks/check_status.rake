@@ -36,7 +36,7 @@
     task :check_stanford => :environment do
       institution = Institution.find_by name: "Stanford"
       stanford_hosts = Host.where(institution_id: institution.id)
-      layers = Layer.where(host_id: stanford_hosts)
+      layers = Layer.where(host_id: stanford_hosts, active: true)
       layers.shuffle.each do |layer|
         Status.run_check(layer)
       end
