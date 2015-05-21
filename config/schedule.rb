@@ -26,6 +26,11 @@ every '0 1 * * 6', :roles => [:web] do
   rake 'clean:status'
 end
 
+every :day, :at => '11:00pm', :roles => [:whenever] do
+  rake 'solr:deactivate'
+  rake 'solr:activate'
+end
+
 # every 2.hours do
 #   command "/usr/bin/some_great_command"
 #   runner "MyModel.some_method"
