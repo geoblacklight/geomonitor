@@ -10,7 +10,7 @@ set :output, {:error => 'log/error.log', :standard => 'log/cron.log'}
 
 # Only set cron jobs in production
 
-every '15 * * * *', :roles => [:whenever] do
+every '15 */2 * * *', :roles => [:whenever] do
   rake 'layers:check_stanford'
 end
 
