@@ -6,7 +6,7 @@ namespace :solr do
       l = Layer.find_by_name(name_id)
       if l.nil?
         doc = Geomonitor.find_document(name_id)
-        if doc.present?
+        if doc.present? && !doc['uuid'].empty?
           wms = JSON.parse(doc['dct_references_s']).try(:[], 'http://www.opengis.net/def/serviceType/ogc/wms')
           if wms
             wms = wms.gsub('/wms', '')
