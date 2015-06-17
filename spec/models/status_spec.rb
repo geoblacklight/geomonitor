@@ -48,7 +48,6 @@ describe Status do
       expect(@status.res_message).to eq(nil)
     end
     it 'with res_time' do
-      pending('fixing ruby time')
       expect(@status.res_time).to eq(0.123)
     end
     it 'with status_message' do
