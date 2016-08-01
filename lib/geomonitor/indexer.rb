@@ -29,8 +29,7 @@ module Geomonitor
     end
 
     def update_by_id(params)
-      uuid = uuid_from_id(params[:id])
-      data = [{ uuid: uuid, layer_availability_score_f: { set: params[:score] } }]
+      data = [{ layer_slug_s: params[:id], layer_availability_score_f: { set: params[:score] } }]
       update(data)
     end
 

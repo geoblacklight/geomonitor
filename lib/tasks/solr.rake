@@ -6,23 +6,31 @@ namespace :solr do
       l = Layer.find_by_name(name_id)
       if l.nil?
         doc = Geomonitor.find_document(name_id)
-        if doc.present? && doc['uuid'].present?
-          wms = JSON.parse(doc['dct_references_s']).try(:[], 'http://www.opengis.net/def/serviceType/ogc/wms')
+        if doc.present? && doc['layer_slug_s'].present?
+          begin
+            wms = JSON.parse(doc['dct_references_s']).try(:[], 'http://www.opengis.net/def/serviceType/ogc/wms')
+          rescue JSON::ParserError
+            wms = nil
+          end
           if wms
             wms = wms.gsub('/wms', '')
             doc_institution = doc['dct_provenance_s']
             institution = Institution.find_or_create_by(name: doc_institution)
-            host = Host.find_or_create_by(url: wms, institution_id: institution.id) do |host|
-              host.name = "#{institution.name}"
+            begin
+              host = Host.find_or_create_by(url: wms, institution_id: institution.id) do |host|
+                host.name = "#{institution.name}"
+              end
+            rescue ActiveRecord::RecordNotUnique
+              host = Host.where(url: wms, institution_id: institution.id).first
             end
             begin
-              georss_bbox = doc['georss_box_s'].split(' ')
+              envelope = doc['solr_geom'].gsub('ENVELOPE(', '').split(', ')
               Layer.create(
                 name: name_id,
                 host_id: host.id,
                 geoserver_layername: doc['layer_id_s'],
                 access: doc['dc_rights_s'],
-                bbox: "#{georss_bbox[1]} #{georss_bbox[0]} #{georss_bbox[3]} #{georss_bbox[2]}",
+                bbox: "#{envelope[0]} #{envelope[3]} #{envelope[1]} #{envelope[2]}",
                 active: true
               )
             rescue NoMethodError => e
