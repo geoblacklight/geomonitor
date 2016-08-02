@@ -23,27 +23,6 @@ This should be an array of [geoblacklight-schema](https://github.com/geoblacklig
 $ curl -L https://raw.githubusercontent.com/geoblacklight/geoblacklight-schema/master/examples/selected.json -o data/transformed.json
 ```
 
-#### Complete way (full documents)
-
-Use [GeoHydra](https://github.com/sul-dlss/geohydra) to download, validate, and transform all OpenGeoportal documents to geoblacklight-schema format.
-
-```
-# Clone geohydra repository (to your location of choice)
-$ git clone https://github.com/sul-dlss/geohydra.git
-
-# Download OGP Solr Documents
-$ ruby ogp/download.rb
-
-# Validate documents
-$ ruby ogp/validate.rb
-
-# Transform documents
-$ ruby ogp/tranform.rb
-
-# Copy transformed.json to GeoMonitor
-$ cp [path of transformed.json]/transformed.json [geomonitor path]/data/transformed.json
-```
-
 
 ### Setup database
 
