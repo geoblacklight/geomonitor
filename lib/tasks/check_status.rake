@@ -9,8 +9,8 @@
       layers.shuffle.each do |layer|
 
         # Skip if host is not pingable
-        next if layer.host.pings.last.nil?
-        next unless layer.host.pings.last.status
+        next if layer.endpoint.pings.last.nil?
+        next unless layer.endpoint.pings.last.status
 
         # Skip if access is restricted
         next if layer[:access] == 'Restricted'
@@ -23,7 +23,7 @@
       layers.shuffle.each do |layer|
 
         # Skip if host is not pingable
-        next unless layer.host.pings.last.status
+        next unless layer.endpoint.pings.last.status
 
         # Skip if access is restricted
         next if layer[:access] == 'Restricted'
@@ -36,7 +36,8 @@
     task :check_stanford => :environment do
       institution = Institution.find_by name: "Stanford"
       stanford_hosts = Host.where(institution_id: institution.id)
-      layers = Layer.where(host_id: stanford_hosts, active: true)
+      stanford_endpoints = Endpoint.where(host: stanford_hosts)
+      layers = Layer.where(endpoint: stanford_endpoints, active: true)
       layers.shuffle.each do |layer|
         Status.run_check(layer)
       end
@@ -44,11 +45,11 @@
   end
 
   namespace :ping do
-    desc 'Ping all hosts'
-    task :hosts => :environment do
-      hosts = Host.all()
-      hosts.shuffle.each do |host|
-        Ping.check_status(host)
+    desc 'Ping all endpoint'
+    task :endpoints => :environment do
+      endpoints = Endpoint.all
+      endpoints.shuffle.each do |endpoint|
+        Ping.check_status(endpoint)
       end
     end
   end

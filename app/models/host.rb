@@ -1,7 +1,7 @@
 class Host < ActiveRecord::Base
   belongs_to :institution
-  has_many :layers
-  has_many :pings
+  has_many :endpoints
+  has_many :layers, through: :endpoints
   validates :institution_id, presence: true
   before_create :check_and_increment
 
@@ -16,10 +16,6 @@ class Host < ActiveRecord::Base
     Rails.cache.fetch("host/#{id}/overall_status", expires_in: 24.hours) do
       calculate_overall_status
     end
-  end
-
-  def last_ping_status
-    pings.recent_status
   end
 
   def layers_count(options = {})

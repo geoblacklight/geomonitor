@@ -1,8 +1,9 @@
 class Layer < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
-  belongs_to :host, counter_cache: true
-  validates :host_id, presence: true
+  belongs_to :endpoint
+  has_one :host, through: :endpoint
+  validates :endpoint_id, presence: true
   has_many :statuses
   has_one :latest_status,
     -> (object) { where("latest = ?", true) }, :class_name => 'Status'
@@ -38,7 +39,8 @@ class Layer < ActiveRecord::Base
   end
 
   def self.current_recent_status(params)
-    where(host_id: params[:id], active: true)
+    endpoints = Endpoint.where(host: params[:id])
+    where(endpoint: endpoints, active: true)
          .with_current_status(params[:status])
          .includes(:latest_status)
          .order(updated_at: :desc)

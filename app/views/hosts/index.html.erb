@@ -15,7 +15,7 @@
 
 <% @hosts.each do |host| %>
   <tr>
-    <td><%= ping_status(host.last_ping_status) if host.last_ping_status %> <%= link_to host.name, host %></td>
+    <td><%= link_to host.name, host %></td>
     <td><%= link_to host.url, host %></td>
     <td><%= link_to host.institution_name, host.institution  %></td>
     <td><%= number_with_delimiter(host.layers_count) %></td>

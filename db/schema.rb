@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150123224019) do
+ActiveRecord::Schema.define(version: 20160802134412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "endpoints", force: :cascade do |t|
+    t.string   "name"
+    t.string   "url"
+    t.integer  "host_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "pings_count"
+  end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
@@ -35,7 +44,6 @@ ActiveRecord::Schema.define(version: 20150123224019) do
     t.string   "url"
     t.integer  "institution_id"
     t.integer  "layers_count"
-    t.integer  "pings_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -57,25 +65,25 @@ ActiveRecord::Schema.define(version: 20150123224019) do
     t.string   "access"
     t.text     "description"
     t.string   "bbox"
-    t.integer  "host_id"
     t.integer  "statuses_count"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "slug"
     t.boolean  "active"
+    t.integer  "endpoint_id"
   end
 
-  add_index "layers", ["host_id"], name: "index_layers_on_host_id", using: :btree
+  add_index "layers", ["endpoint_id"], name: "index_layers_on_endpoint_id", using: :btree
 
   create_table "pings", force: :cascade do |t|
     t.boolean  "status"
     t.boolean  "latest"
-    t.integer  "host_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "endpoint_id"
   end
 
-  add_index "pings", ["host_id"], name: "index_pings_on_host_id", using: :btree
+  add_index "pings", ["endpoint_id"], name: "index_pings_on_endpoint_id", using: :btree
 
   create_table "statuses", force: :cascade do |t|
     t.string   "res_code"
@@ -92,4 +100,5 @@ ActiveRecord::Schema.define(version: 20150123224019) do
 
   add_index "statuses", ["layer_id"], name: "index_statuses_on_layer_id", using: :btree
 
+  add_foreign_key "layers", "endpoints"
 end

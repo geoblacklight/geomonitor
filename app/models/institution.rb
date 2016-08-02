@@ -3,6 +3,7 @@ class Institution < ActiveRecord::Base
 
   def layer_count
     hosts = Host.where(institution_id: id).ids
-    Layer.where(host_id: hosts).count
+    endpoints = Endpoint.where(host: hosts)
+    Layer.where(endpoint: endpoints).count
   end
 end

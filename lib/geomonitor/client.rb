@@ -35,7 +35,7 @@ module Geomonitor
     # url used for tile request
     # @return [String]
     def url
-      @layer.host.url + '/wms'
+      @layer.endpoint.url + '/wms'
     end
 
     ##

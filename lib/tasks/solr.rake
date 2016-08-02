@@ -16,18 +16,22 @@ namespace :solr do
             wms = wms.gsub('/wms', '')
             doc_institution = doc['dct_provenance_s']
             institution = Institution.find_or_create_by(name: doc_institution)
+            host_url = URI.parse(wms).host
             begin
-              host = Host.find_or_create_by(url: wms, institution_id: institution.id) do |host|
+              host = Host.find_or_create_by(url: host_url, institution_id: institution.id) do |host|
                 host.name = "#{institution.name}"
               end
             rescue ActiveRecord::RecordNotUnique
-              host = Host.where(url: wms, institution_id: institution.id).first
+              host = Host.where(url: host_url, institution_id: institution.id).first
+            end
+            begin
+              endpoint = Endpoint.find_or_create_by(host: host, url: wms)
             end
             begin
               envelope = doc['solr_geom'].gsub('ENVELOPE(', '').split(', ')
               Layer.create(
                 name: name_id,
-                host_id: host.id,
+                endpoint: endpoint,
                 geoserver_layername: doc['layer_id_s'],
                 access: doc['dc_rights_s'],
                 bbox: "#{envelope[0]} #{envelope[3]} #{envelope[1]} #{envelope[2]}",
@@ -41,10 +45,10 @@ namespace :solr do
       end
     end
   end
-  desc 'Save new layers from Solr and ping hosts'
+  desc 'Save new layers from Solr and ping endpoints'
   task update_and_ping: :environment do
     Rake::Task['solr:update_layers'].invoke
-    Rake::Task['ping:hosts'].invoke
+    Rake::Task['ping:endpoints'].invoke
   end
   desc 'Deactivate non-Solr layers'
   task deactivate: :environment do
@@ -53,7 +57,7 @@ namespace :solr do
       Layer.where.not(name: solr_current).each do |layer|
         layer.active = false
         layer.save
-        Rails.cache.delete("host/#{layer.host_id}/layers_count")
+        Rails.cache.delete("host/#{layer.endpoint.host_id}/layers_count")
       end
     end
   end
@@ -65,7 +69,7 @@ namespace :solr do
       if layer
         layer.active = true
         layer.save
-        Rails.cache.delete("host/#{layer.host_id}/layers_count")
+        Rails.cache.delete("host/#{layer.endpoint.host_id}/layers_count")
       end
     end
   end
