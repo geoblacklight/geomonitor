@@ -75,8 +75,7 @@ group :deployment do
 end
 
 gem 'config'
-gem 'squash_ruby', require: 'squash/ruby'
-gem 'squash_rails', require: 'squash/rails'
+gem 'honeybadger', '~> 2.0'
 
 gem 'newrelic_rpm'
 
