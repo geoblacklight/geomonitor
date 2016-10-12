@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5.1'
+gem 'rails', '4.2.7.1'
 
-gem 'bootstrap-sass', '~> 3.3.4.1'
+gem 'bootstrap-sass', '~> 3.3.5'
 gem 'autoprefixer-rails'
 
 gem 'rest-client'
@@ -71,10 +71,10 @@ group :deployment do
   gem 'capistrano', '~> 3.4.0'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
-  gem 'lyberteam-capistrano-devel', '3.1.0'
+  gem 'dlss-capistrano', '~> 3.1'
 end
 
-gem 'rails_config'
+gem 'config'
 gem 'squash_ruby', require: 'squash/ruby'
 gem 'squash_rails', require: 'squash/rails'
 

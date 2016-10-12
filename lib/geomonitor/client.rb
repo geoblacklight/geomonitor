@@ -60,10 +60,8 @@ module Geomonitor
       conn = Faraday.new(url: url)
       conn.get do |request|
         request.params = request_params
-        request.options = {
-          timeout: timeout,
-          open_timeout: timeout
-        }
+        request.options.timeout = timeout
+        request.options.open_timeout = timeout
       end
     rescue Faraday::Error::ConnectionFailed
       raise Geomonitor::Exceptions::TileGrabFailed, message: 'Connection failed', url: conn.url_prefix.to_s
