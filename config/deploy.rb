@@ -13,6 +13,7 @@ set :deploy_to, "#{fetch(:home_directory)}/#{fetch(:application)}"
 
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
+set :honeybadger_env, fetch(:stage)
 # Default value for :scm is :git
 # set :scm, :git
 
@@ -26,7 +27,7 @@ set :log_level, :info
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/solr.yml}
+set :linked_files, %w{config/database.yml config/solr.yml config/honeybadger.yml}
 
 # Default value for linked_dirs is []
 set :linked_dirs, %w{data config/settings log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
