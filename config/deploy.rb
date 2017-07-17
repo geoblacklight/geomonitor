@@ -6,7 +6,7 @@ set :repo_url, 'https://github.com/geoblacklight/geomonitor.git'
 
 # Default branch is :master
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
-ask :user, proc { `whoami`.chomp }.call
+ask :user, 'geostaff'
 set :home_directory, "/opt/app/#{fetch(:user)}"
 
 set :deploy_to, "#{fetch(:home_directory)}/#{fetch(:application)}"
